@@ -25,7 +25,7 @@
 
             <div class="mb-3">
               <label for="formFileMultiple" class="form-label">Пример ввода нескольких файлов</label>
-              <input class="form-control-sm" type="file" id="formFileMultiple" multiple>
+              <input class="form-control-sm" type="file" id="formFileMultiple" accept=".pdf" multiple>
             </div>
 
             <h2>Telegram Code</h2>
@@ -42,8 +42,6 @@
       </div>
     </section>
 
-    <input type="file" onChange="setFile(this)" />
-    <button id="merge-button">merge</button>
     <script src="sendFile.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
