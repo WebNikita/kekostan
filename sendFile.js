@@ -19,9 +19,9 @@ function sendFile(input, funcType) {
   // 1. Создаём новый XMLHttpRequest-объект
   let xhr = new XMLHttpRequest();
 
-  url = "http://10.11.8.164:80/pdfun/api/v1.0/merge_files";
+  url = "http://localhost:5000/pdfun/api/v1.0/merge_files";
   // 2. Настраиваем его: GET-запрос по URL /article/.../load
-  xhr.open("POST", "/article/xmlhttprequest/example/load");
+  xhr.open("POST", url);
 
   // 3. Отсылаем запрос
   xhr.send();
@@ -46,7 +46,7 @@ function sendFile(input, funcType) {
   };
 
   xhr.onerror = function () {
-    alert("Запрос не удался");
+    console.log("Запрос не удался");
   };
   //alert(`File name: ${file.name}`); // например, my.png
   //alert(`Last modified: ${file.lastModified}`); // например, 1552830408824
