@@ -1,5 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 #telegram-code {
 	text-align: center;
 	margin-top: 20px;
+
+.drag-area{
+  border: 2px dashed black;
+  height: auto;
+  background-color: blueviolet;
+  max-width: 190px;
+  width: auto;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.drag-area.active{
+  border: 2px solid black;
+}
+.drag-area header{
+  font-size: 15px;
+  font-weight: 100;
+  color: black;
+}
+.drag-area span{
+  font-size: 5px;
+  font-weight: 50;
+  color: black;
+  margin: 10px 0 15px 0;
+}
+.drag-area button{
+  padding: 10px 25px;
+  font-size: 10px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  background: black;
+  color: #5256ad;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 }

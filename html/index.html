@@ -8,6 +8,7 @@
 
       <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -30,23 +31,6 @@
     </header>
 
     <section>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-8 center-align">
-            <div class="mb-3">
-              <label for="formFileMultiple" class="form-label">
-                Пример ввода нескольких файлов
-              </label>
-              <input
-                class="form-control-sm"
-                type="file"
-                id="formFileMultiple"
-                accept=".pdf"
-                multiple
-                onChange="setFile(this)"
-              />
-            </div>
-
             <h2 class="center-align">Telegram Code</h2>
             <div id="telegram-code" class="card-panel grey darken-4 white-text z-depth-2 center">КОД</div>
           </div>
@@ -62,9 +46,16 @@
         </div>
       </div>
     </section>
+    <div class="drag-area">
+      <header>Drag & Drop to Upload File</header>
+      <button>Browse File</button>
+      <input type="file" hidden onChange="setFile(this)" id="myfileinput" multiple>
+    </div>
 
     <script src="../sendFiles.js"></script>
     <script src="../getCode.js"></script>
+    <script src="../js/script.js"></script>
+    <script src="../js/func.js"></script>
 
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
