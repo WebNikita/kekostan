@@ -1,5 +1,5 @@
-let span = document.getElementById("code-span");
-let btn = document.getElementById("gen-code");
+let span = document.getElementById("telegram-code");
+let btn = document.getElementById("get-telegram-code");
 btn.addEventListener("click", getCode, false);
 
 function getCode() {

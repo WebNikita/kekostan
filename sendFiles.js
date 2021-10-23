@@ -8,11 +8,12 @@ mergeBtn.onclick = function () {
   }
 };
 function setFile(input) {
-  let file = input.files[0];
-  files.push(file);
-  console.log(files);
-  console.log(`File name: ${file.name}`); // например, my.png
-  console.log(`Last modified: ${file.lastModified}`); // например, 1552830408824
+  let inputFiles = input.files;
+  files.push(inputFiles);
+  console.log(inputFiles);
+  for (let i in inputFiles) {
+    console.log(`Files: ${inputFiles[i].name}`); // например, my.png
+  }
 }
 function sendFile(input, funcType) {
   console.log(input);
