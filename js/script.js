@@ -1,39 +1,38 @@
 //selecting all required elements
 const dropArea = document.querySelector(".drag-area"),
-dragText = dropArea.querySelector("header"),
-button = dropArea.querySelector("button"),
-input = dropArea.querySelector("input");
-let file; //this is a global variable and we'll use it inside multiple functions
+  dragText = dropArea.querySelector("header"),
+  button = dropArea.querySelector("button"),
+  input = dropArea.querySelector("input");
 
-button.onclick = ()=>{
+button.onclick = () => {
   input.click(); //if user click on the button then the input also clicked
-}
+};
 
-input.addEventListener("change", function(){
+input.addEventListener("change", function () {
   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  file = this.files[0];
-  dropArea.classList.add("active");
-  showFile(); //calling function
+  sendFile(this);
 });
 
-
 //If user Drag File Over DropArea
-document.addEventListener("dragover", (event)=>{
+dropArea.addEventListener("dragover", (event) => {
   event.preventDefault(); //preventing from default behaviour
-  dropArea.classList.add("active");
-  dragText.textContent = " File";
+  dragText.textContent = "Release them!";
 });
 
 //If user leave dragged File from DropArea
-dropArea.addEventListener("dragleave", ()=>{
-  dropArea.classList.remove("active");
-  dragText.textContent = "Drag & Drop to Upload File";
+dropArea.addEventListener("dragleave", () => {
+  dragText.textContent = "Move Here!";
 });
 
 //If user drop File on DropArea
-document.addEventListener("drop", (event)=>{
+dropArea.addEventListener("drop", (event) => {
   event.preventDefault(); //preventing from default behaviour
   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  dropArea.textContent = "LOL";
-  file = event.dataTransfer.files[0];
+  let str = "";
+  let fileinp = event.dataTransfer.files;
+  for (let i = 0; i < fileinp.length; i++) {
+    str += (fileinp[i].name + "\n");
+  }
+  dropArea.textContent = str;
+  //sendFile(this);
 });

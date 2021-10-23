@@ -5,15 +5,13 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-body{
-  display: flex;
-  min-height: 100vh;
-  background:black;
-}
+
 .drag-area{
-  border: 2px dashed #fff;
-  height: 200px;
-  width: 300px;
+  border: 2px dashed black;
+  height: auto;
+  background-color: blueviolet;
+  max-width: 190px;
+  width: auto;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -21,37 +19,27 @@ body{
   flex-direction: column;
 }
 .drag-area.active{
-  border: 2px solid #fff;
-}
-.drag-area .icon{
-  font-size: 100px;
-  color: #fff;
+  border: 2px solid black;
 }
 .drag-area header{
-  font-size: 30px;
-  font-weight: 500;
-  color: #fff;
+  font-size: 15px;
+  font-weight: 100;
+  color: black;
 }
 .drag-area span{
-  font-size: 25px;
-  font-weight: 500;
-  color: #fff;
+  font-size: 5px;
+  font-weight: 50;
+  color: black;
   margin: 10px 0 15px 0;
 }
 .drag-area button{
   padding: 10px 25px;
-  font-size: 20px;
+  font-size: 10px;
   font-weight: 500;
   border: none;
   outline: none;
-  background: #fff;
+  background: black;
   color: #5256ad;
   border-radius: 5px;
   cursor: pointer;
-}
-.drag-area img{
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border-radius: 5px;
 }
