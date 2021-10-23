@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, session
+from flask.helpers import send_file
 from flask.wrappers import Request
 from flask_cors import CORS
 import os
@@ -25,22 +26,27 @@ session = DBSession()
 # Роут для склеивания файлов PDF
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
+    path_bufer = []
     data_info = request
     data_files = request.files.lists()
     print(data_files)
     for data in data_files:
+        user_code = data[0]
+        print(user_code)
         for items in data[1]:
             file_name = secure_filename(items.filename)
-            print(file_name)
-            # items.save(f'/home/nikita/Python/kekostan/API/users_files/{file_name}')
-    return jsonify({"answer": "file on the position"})
-
+            items.save(f'/home/nikita/kekostan/API/users_files/{file_name}')
+            path_bufer.append(f'/home/nikita/kekostan/API/users_files/{file_name}')
+    pdf_functions.merge_files(path_bufer, '/home/nikita/kekostan/API/users_files/test.pdf')
+    return send_file('/home/nikita/kekostan/API/users_files/test.pdf', as_attachment=True)
 
 # Роут для отправки кода на вебморду
 @app.route("/pdfun/api/v1.0/get_code", methods=["GET"])
 def get_code():
     user_code = support_functions.create_code(99, 999)
     user = Users(key=user_code)
+    session.add(user)
+    session.commit()
     return jsonify({"user_code": user_code})
 
 
