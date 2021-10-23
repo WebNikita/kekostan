@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, send_from_directory
 from flask.helpers import send_file
 from flask.wrappers import Request
 from flask_cors import CORS
@@ -33,29 +33,27 @@ def merge_files():
     path_bufer = []
     data_info = request
     data_files = request.files.lists()
-    
+    print(request.files)
+    # print(data_files)
     for data in data_files:
+        print(data)
         user_code = data[0]
         print(user_code)
         for items in data[1]:
             file_name = secure_filename(items.filename)
-            items.save(f'/home/nikita/kekostan/API/users_files/{file_name}')
-            path_bufer.append(f'/home/nikita/kekostan/API/users_files/{file_name}')
-    
-    pdf_functions.merge_files(path_bufer, '/home/nikita/kekostan/API/users_files/test.pdf')
-    
-    for item in path_bufer:
-        os.remove(item)
-    
-    return send_file('/home/nikita/kekostan/API/users_files/test.pdf', as_attachment=True)
+            items.save(f"users_files/{file_name}")
+            path_bufer.append(f"users_files/{file_name}")
+    pdf_functions.merge_files(path_bufer, "users_files/test.pdf")
+    return send_from_directory("users_files/", "test.pdf", as_attachment=True)
+
 
 # Роут для отправки кода на вебморду
 @app.route("/pdfun/api/v1.0/get_code", methods=["GET"])
 def get_code():
     user_code = support_functions.create_code(99, 999)
-    user = Users(key=user_code)
-    session.add(user)
-    session.commit()
+    # user = Users(key=user_code)
+    # session.add(user)
+    # session.commit()
     return jsonify({"user_code": user_code})
 
 
