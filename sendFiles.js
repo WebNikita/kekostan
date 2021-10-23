@@ -9,9 +9,9 @@ mergeBtn.onclick = function () {
 };
 function setFile(input) {
   let inputFiles = input.files;
-  files.push(inputFiles);
   console.log(inputFiles);
   for (let i in inputFiles) {
+    files.push(inputFiles[i]);
     console.log(`Files: ${inputFiles[i].name}`); // например, my.png
   }
 }
