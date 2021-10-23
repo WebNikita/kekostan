@@ -24,7 +24,9 @@ function sendFile(input, funcType) {
   xhr.open("POST", url);
 
   // 3. Отсылаем запрос
-  xhr.send(file);
+  var formData = new FormData();
+  formData.append("thefile", file);
+  xhr.send(formData);
 
   // 4. Этот код сработает после того, как мы получим ответ сервера
   xhr.onload = function () {
