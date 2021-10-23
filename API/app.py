@@ -31,7 +31,7 @@ def merge_files():
         for items in data[1]:
             file_name = secure_filename(items.filename)
             print(file_name)
-            items.save(f'/home/nikita/Python/kekostan/API/users_files/{file_name}')
+            items.save(f'/home/nikita/kekostan/API/users_files/{file_name}')
     return jsonify({'answer': 'file on the position'})
 
 # Роут для отправки кода на вебморду
