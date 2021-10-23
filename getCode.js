@@ -1,13 +1,10 @@
 let span = document.getElementById("telegram-code");
-let btn = document.getElementById("get-telegram-code");
 let files = [];
 let mergeBtn = document.getElementById("merge-button");
 let user_code;
 document.addEventListener("DOMContentLoaded", () => {
   getCode();
 });
-
-btn.addEventListener("click", getCode, false);
 
 function getCode() {
   let xhr = new XMLHttpRequest();
