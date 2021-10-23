@@ -110,5 +110,5 @@ function sendFile(input, funcType) {
   xhr.onerror = function () {
     console.log("Запрос не удался");
   };
-  files = [];
+  files = {};
 }
