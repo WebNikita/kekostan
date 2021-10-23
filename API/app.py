@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask.wrappers import Request
 from flask_cors import CORS
 
@@ -8,6 +8,7 @@ import support_functions
 
 app = Flask(__name__)
 CORS(app)
+
 
 # Роут для склеивания файлов PDF
 @app.route('/pdfun/api/v1.0/merge_files', methods=['POST'])
