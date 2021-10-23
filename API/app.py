@@ -26,6 +26,10 @@ session = DBSession()
 # Роут для склеивания файлов PDF
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
+    
+    if os.path.isfile('/home/nikita/kekostan/API/users_files/test.pdf'):
+        os.remove('/home/nikita/kekostan/API/users_files/test.pdf')
+    
     path_bufer = []
     data_info = request
     data_files = request.files.lists()
