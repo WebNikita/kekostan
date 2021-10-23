@@ -14,7 +14,12 @@ from sqlalchemy import create_engine
 # создание экземпляра declarative_base
 Base = declarative_base()  
   
-# здесь добавим классы 
+class Users(Base):  
+    __tablename__ = 'users'  
+    
+    id = Column(Integer, primary_key=True)  
+    key = Column(String(250), nullable=False)  
+    files = Column(String(), nullable=False)  
   
 # создает экземпляр create_engine в конце файла  
 engine = create_engine('sqlite:///main.db')  
