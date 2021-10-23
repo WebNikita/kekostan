@@ -57,8 +57,8 @@ mergeBtn.onclick = function () {
   }
 };
 
-function setFile(input) {
-  let inputFiles = input.files;
+function setFile(inputFiles) {
+  // let inputFiles = input.files;
   console.log("inputFiles:");
   console.log(inputFiles);
   Array.prototype.forEach.call(inputFiles, (file) => files.push(file));
@@ -115,18 +115,18 @@ function sendFile(input, funcType) {
 
 //selecting all required elements
 let dropArea = document.querySelector(".drag-area");
-// dragText = dropArea.querySelector("header"),
+let dragText = dropArea.querySelector("header");
 let button = dropArea.querySelector("button");
-// input = dropArea.querySelector("input");
+let input = dropArea.querySelector("input");
 
 button.onclick = () => {
-  setFile; //if user click on the button then the input also clicked
+  //if user click on the button then the input also clicked
 };
 
-// input.addEventListener("change", function () {
-//   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-//   // sendFile(this);
-// });
+input.addEventListener("change", function () {
+  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+  setFile(this);
+});
 
 // //If user Drag File Over DropArea
 dropArea.addEventListener("dragover", (event) => {
@@ -149,5 +149,5 @@ dropArea.addEventListener("drop", (event) => {
     str += fileinp[i].name + "\n";
   }
   dropArea.textContent = str;
-  //sendFile(this);
+  setFile(fileinp);
 });
