@@ -24,7 +24,8 @@ session = DBSession()
 @app.route('/pdfun/api/v1.0/merge_files', methods=['POST'])
 def merge_files():
     data_info = request
-    print(data_info)
+    data_files = request.files
+    print(data_files)
     return jsonify({'Answer': 'file on the position'})
 
 # Роут для отправки кода на вебморду
