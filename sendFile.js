@@ -1,15 +1,16 @@
-let file = null;
+let files = [];
 let mergeBtn = document.getElementById("merge-button");
 mergeBtn.onclick = function () {
-  if (file !== null) {
-    sendFile(file, "merge");
+  if (files) {
+    sendFile(files, "merge");
   } else {
     console.log("No file!");
   }
 };
 function setFile(input) {
-  file = input.files[0];
-
+  let file = input.files[0];
+  files.push(file);
+  console.log(files);
   console.log(`File name: ${file.name}`); // например, my.png
   console.log(`Last modified: ${file.lastModified}`); // например, 1552830408824
 }
@@ -24,8 +25,11 @@ function sendFile(input, funcType) {
   xhr.open("POST", url);
 
   // 3. Отсылаем запрос
-  var formData = new FormData();
-  formData.append("thefile", file);
+  let formData = new FormData();
+  for (let i in files) {
+    console.log(i);
+    formData.append("uploads", files[i]);
+  }
   xhr.send(formData);
 
   // 4. Этот код сработает после того, как мы получим ответ сервера
