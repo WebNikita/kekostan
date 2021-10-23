@@ -106,38 +106,6 @@ function sendFile(input, funcType) {
     }
   };
 
-  // xhr.onreadystatechange = function () {
-  //   console.log(xhr.readyState);
-  //   console.log(xhr.status);
-  //   let blob = new Blob([xhr.response]);
-  //   let url = window.URL.createObjectURL(blob);
-
-  //   let link = document.createElement("a");
-  //   link.href = url;
-  //   link.download = "report.pdf";
-  //   link.click();
-  // };
-
-  // 4. Этот код сработает после того, как мы получим ответ сервера
-  // xhr.onload = function () {
-  //   if (xhr.status != 200) {
-  //     // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
-  //     console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
-  //   } else {
-  //     // если всё прошло гладко, выводим результат
-  //     console.log(xhr.response);
-  //     console.log(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
-  //   }
-  // };
-
-  // xhr.onprogress = function (event) {
-  //   if (event.lengthComputable) {
-  //     console.log(`Получено ${event.loaded} из ${event.total} байт`);
-  //   } else {
-  //     console.log(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
-  //   }
-  // };
-
   xhr.onerror = function () {
     console.log("Запрос не удался");
   };
@@ -157,7 +125,7 @@ button.onclick = () => {
 
 input.addEventListener("change", function () {
   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  setFile(this);
+  setFile(this.files);
 });
 
 // //If user Drag File Over DropArea
