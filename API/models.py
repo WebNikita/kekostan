@@ -19,7 +19,7 @@ class Users(Base):
     
     id = Column(Integer, primary_key=True)  
     key = Column(String(250), nullable=False)  
-    files = Column(String(), nullable=False)  
+    files = Column(String(), nullable=True)  
   
 # создает экземпляр create_engine в конце файла  
 engine = create_engine('sqlite:///main.db')  
