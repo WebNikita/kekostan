@@ -26,10 +26,14 @@ session = DBSession()
 # Роут для склеивания файлов PDF
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
+    
+    if os.path.isfile('/home/nikita/kekostan/API/users_files/test.pdf'):
+        os.remove('/home/nikita/kekostan/API/users_files/test.pdf')
+    
     path_bufer = []
     data_info = request
     data_files = request.files.lists()
-    print(data_files)
+    
     for data in data_files:
         user_code = data[0]
         print(user_code)
@@ -37,7 +41,12 @@ def merge_files():
             file_name = secure_filename(items.filename)
             items.save(f'/home/nikita/kekostan/API/users_files/{file_name}')
             path_bufer.append(f'/home/nikita/kekostan/API/users_files/{file_name}')
+    
     pdf_functions.merge_files(path_bufer, '/home/nikita/kekostan/API/users_files/test.pdf')
+    
+    for item in path_bufer:
+        os.remove(item)
+    
     return send_file('/home/nikita/kekostan/API/users_files/test.pdf', as_attachment=True)
 
 # Роут для отправки кода на вебморду
