@@ -37,8 +37,16 @@
     </header>
 
     <section>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8 center-align">
+            <div class="drag-area center-align">
+              <header>Drag & Drop to Upload File</header>
+              <button>Browse File</button>
+              <input type="file" hidden id="myfileinput" accept=".pdf" multiple>
+            </div>
             <h2 class="center-align">Telegram Code</h2>
-            <div id="telegram-code" class="card-panel grey darken-4 white-text z-depth-2 center">КОД</div>
+            <div id="telegram-code" class=" grey darken-4 white-text z-depth-2 center-align">КОД</div>
           </div>
           <div class="col center-align" >
             <h2 class="center-align">Функции</h2>
@@ -52,12 +60,6 @@
         </div>
       </div>
     </section>
-    <div class="drag-area">
-      <header>Drag & Drop to Upload File</header>
-      <input type="file" hidden id="myfileinput" multiple>
-      <button>Browse File</button>
-    </div>
-
     <!-- <script src="../getCode.js"></script> -->
     <script src="../js/script.js"></script>
     <script src="../js/func.js"></script>
