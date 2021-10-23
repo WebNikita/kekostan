@@ -120,6 +120,7 @@ let button = dropArea.querySelector("button");
 let input = dropArea.querySelector("input");
 
 button.onclick = () => {
+  input.click();
   //if user click on the button then the input also clicked
 };
 
