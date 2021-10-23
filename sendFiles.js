@@ -1,15 +1,16 @@
-let file = null;
+let files = [];
 let mergeBtn = document.getElementById("merge-button");
 mergeBtn.onclick = function () {
-  if (file !== null) {
-    sendFile(file, "merge");
+  if (files) {
+    sendFile(files, "merge");
   } else {
-    alert("No file!");
+    console.log("No file!");
   }
 };
 function setFile(input) {
-  file = input.files[0];
-
+  let file = input.files[0];
+  files.push(file);
+  console.log(files);
   console.log(`File name: ${file.name}`); // например, my.png
   console.log(`Last modified: ${file.lastModified}`); // например, 1552830408824
 }
@@ -24,30 +25,36 @@ function sendFile(input, funcType) {
   xhr.open("POST", url);
 
   // 3. Отсылаем запрос
-  xhr.send();
+  let formData = new FormData();
+  for (let i in files) {
+    console.log(i);
+    formData.append("uploads", files[i]);
+  }
+  xhr.send(formData);
 
   // 4. Этот код сработает после того, как мы получим ответ сервера
   xhr.onload = function () {
     if (xhr.status != 200) {
       // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
-      alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+      console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
     } else {
       // если всё прошло гладко, выводим результат
-      alert(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
+      console.log(xhr.response);
+      console.log(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
     }
   };
 
   xhr.onprogress = function (event) {
     if (event.lengthComputable) {
-      alert(`Получено ${event.loaded} из ${event.total} байт`);
+      console.log(`Получено ${event.loaded} из ${event.total} байт`);
     } else {
-      alert(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
+      console.log(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
     }
   };
 
   xhr.onerror = function () {
     console.log("Запрос не удался");
   };
-  //alert(`File name: ${file.name}`); // например, my.png
-  //alert(`Last modified: ${file.lastModified}`); // например, 1552830408824
+  //console.log(`File name: ${file.name}`); // например, my.png
+  //console.log(`Last modified: ${file.lastModified}`); // например, 1552830408824
 }
