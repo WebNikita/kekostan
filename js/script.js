@@ -30,16 +30,13 @@ mergeBtn.onclick = function () {
 };
 
 telegramBtn.onclick = () => {
-  if (files.length) {
-    sendFile("flip");
-  } else {
-    alert("No file uploaded!");
-  }
-};
+
+  getFileFromTg();
+}; 
 
 clearButton.onclick = () => {
   files = [];
-  dragText.textContent = "Drag & Drop to Upload File";
+  dragText.textContent = "Choose or drop files here";
 };
 
 browseButton.onclick = () => {
@@ -47,7 +44,12 @@ browseButton.onclick = () => {
   //if user click on the browseButton then the input also clicked
 };
 flipBtn.onclick = () => {
-  sendFile("flip");
+  if (files.length) {
+    sendFile("flip");
+  } else {
+    alert("No file uploaded!");
+  }
+};
 };
 
 splitBtn.onclick = () => {
