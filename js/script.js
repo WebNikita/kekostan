@@ -157,7 +157,7 @@ function sendFile(funcType) {
   // 1. Создаём новый XMLHttpRequest-объект
   let xhr = new XMLHttpRequest();
   console.log(req_dict[funcType]);
-  url = `http://localhost:5000/pdfun/api/v1.0/${req_dict[funcType]}`;
+  url = `http://212.109.192.158/pdfun/api/v1.0/${req_dict[funcType]}`;
   // 2. Настраиваем его: GET-запрос по URL /article/.../load
   xhr.open("POST", url);
 
@@ -209,47 +209,39 @@ function sendFile(funcType) {
   dragText.textContent = "Drag & Drop to Upload File";
 }
 
+let counter = 0;
 function getFileFromTg() {
   let xhr = new XMLHttpRequest();
-
-  url = "http://localhost:5000/pdfun/api/v1.0/get_file_from_tg";
+  // 212.109.192.158
+  url = "http://212.109.192.158/pdfun/api/v1.0/get_file_from_tg";
   // 2. Настраиваем его: GET-запрос по URL /article/.../load
   xhr.open("POST", url, true);
   userCodeJson = JSON.stringify({ user_code: userCode });
   console.log(userCodeJson);
   console.log(typeof userCodeJson);
   xhr.send(userCodeJson);
+  xhr.responseType = "blob";
 
-  // 4. Этот код сработает после того, как мы получим ответ сервера
-  xhr.onload = function () {
-    if (xhr.status != 200) {
-      // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
-      console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
-    } else {
-      // если всё прошло гладко, выводим результат
-      console.log("xhr.response:");
-      console.log(xhr.response.toString());
-      console.log(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
-      // res = JSON.parse(xhr.response);
-      // user_code = res["user_code"];
-      // console.log("user code:");
-      // console.log(user_code);
-
-      // span.textContent = user_code;
-      // console.log("files:");
-      // console.log(files);
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var blob = new Blob([this.response], { type: "application/pdf" });
+      console.log(blob);
+      let pdfFile = new File([blob], `pdf_from_tg_${counter++}.pdf`);
+      console.log(pdfFile);
+      setFile([pdfFile]);
+      console.log(files);
     }
-  };
 
-  xhr.onprogress = function (event) {
-    if (event.lengthComputable) {
-      console.log(`Получено ${event.loaded} из ${event.total} байт`);
-    } else {
-      console.log(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
-    }
-  };
+    xhr.onprogress = function (event) {
+      if (event.lengthComputable) {
+        console.log(`Получено ${event.loaded} из ${event.total} байт`);
+      } else {
+        console.log(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
+      }
+    };
 
-  xhr.onerror = function () {
-    console.log("Запрос не удался");
+    xhr.onerror = function () {
+      console.log("Запрос не удался");
+    };
   };
 }
