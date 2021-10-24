@@ -44,8 +44,7 @@ def merge_files():
             items.save(f"/home/pdf/kekostan/API/users_files/{file_name}")
             path_bufer.append(f"/home/pdf/kekostan/API/users_files/{file_name}")
     pdf_functions.merge_files(path_bufer, "/home/pdf/kekostan/API/users_files/test.pdf")
-    return send_from_directory("/home/pdf/kekostan/API
-/users_files/", "test.pdf", as_attachment=True)
+    return send_from_directory("/home/pdf/kekostan/API/users_files/", "test.pdf", as_attachment=True)
 
 
 # Роут для отправки кода на вебморду
