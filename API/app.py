@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, session, send_from_directory
 from flask.helpers import send_file
 from flask.wrappers import Request
+import requests
 from flask_cors import CORS
 import os
 
@@ -81,6 +82,11 @@ def send_file_to_web():
         print("Something goes wrong " + str(e))
     return str(payload)
 
+
+@app.route("/pdfun/api/v1.0/save_file_from_tg", methods=["POST"])
+def save_file_from_tg():
+    print(request.files)
+    return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
 def del_file():
