@@ -27,8 +27,8 @@ session = DBSession()
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
     
-    if os.path.isfile('/home/nikita/kekostan/API/users_files/test.pdf'):
-        os.remove('/home/nikita/kekostan/API/users_files/test.pdf')
+    if os.path.isfile('/home/pdf/kekostan/API/users_files/test.pdf'):
+        os.remove('/home/pdf/kekostan/API/users_files/test.pdf')
     
     path_bufer = []
     data_info = request
@@ -41,10 +41,11 @@ def merge_files():
         print(user_code)
         for items in data[1]:
             file_name = secure_filename(items.filename)
-            items.save(f"/home/nikita/kekostan/API/users_files/{file_name}")
-            path_bufer.append(f"/home/nikita/kekostan/API/users_files/{file_name}")
-    pdf_functions.merge_files(path_bufer, "/home/nikita/kekostan/API/users_files/test.pdf")
-    return send_from_directory("/home/nikita/kekostan/API/users_files/", "test.pdf", as_attachment=True)
+            items.save(f"/home/pdf/kekostan/API/users_files/{file_name}")
+            path_bufer.append(f"/home/pdf/kekostan/API/users_files/{file_name}")
+    pdf_functions.merge_files(path_bufer, "/home/pdf/kekostan/API/users_files/test.pdf")
+    return send_from_directory("/home/pdf/kekostan/API
+/users_files/", "test.pdf", as_attachment=True)
 
 
 # Роут для отправки кода на вебморду
