@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, session, send_from_directory
 from flask.helpers import send_file
 from flask.wrappers import Request
+import requests
 from flask_cors import CORS
 import os
 
@@ -60,6 +61,8 @@ def get_code():
 # Роут для авторизации пользователя по коду
 @app.route("/pdfun/api/v1.0/auth_from_code", methods=["POST"])
 def auth_from_code():
+    data_code = request.data
+    print(data_code)
     return jsonify({"user_code": 'Ok'})
 
 
