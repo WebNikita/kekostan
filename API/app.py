@@ -67,10 +67,12 @@ def send_file_to_web():
     try:
         print(user_code)
         if os.path.isdir(f'./users_files/{user_code}'):
-            return json.dumps({'file_path': [f'{os.getcwd()}/users_files/{user_code}/{path}' for path in os.listdir(f'./users_files/{user_code}')]})
+            files_list = os.listdir(f'./users_files/{user_code}')
+            shutil.move(f'./users_files/{user_code}/{files_list[0]}', f'./users_files/tmp/{user_code}/pdf_to_web.pdf')
+            return send_from_directory(f'./users_files/tmp/{user_code}', "pdf_to_web.pdf")
     except Exception as e:
         print("Something goes wrong " + str(e))
-    return str(payload)
+
 @app.route("/pdfun/api/v1.0/save_file_from_tg", methods=["POST"])
 def save_file_from_tg():
     data_files = request.files.lists()
