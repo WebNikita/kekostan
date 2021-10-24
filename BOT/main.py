@@ -1,9 +1,11 @@
+#!/usr/bin/python3
 import telebot
 from telebot import types
 
 import requests
 
-token = '1273078054:AAGDTUYC56-Lf2EtJFdVC_OufB-walPDECA'
+token = '1606920972:AAFC_ZFHY4aaYc54Q9KBAFbVvuMzhLpRdGM'
+url2="http://212.109.192.158/pdfun/api/v1.0/merge_files"
 
 bot = telebot.TeleBot(token)
 
@@ -37,7 +39,21 @@ def check_text(message):
         keyboard.add(button_go_into_start)	
         prev_message = bot.send_message(message.chat.id,"Введите код с сайта:", reply_markup=keyboard)
         bot.register_next_step_handler(prev_message, send_code_to_API)
+    elif message.text == "Хочу в боте":
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button_merge = types.KeyboardButton("Merge PDFs")
+        keyboard.add(button_merge)
+        msg = bot.send_message(message.chat.id, "Choose function",reply_markup=keyboard)
+        bot.register_next_step_handler(msg,func)
 
+def func(msg):
+    if msg.text == "Merge PDFs":
+        msg = bot.send_message(msg.chat.id, "Send files to merge")
+        bot.register_next_step_handler(msg, sendm)
 
+def sendm(msg):
+    if(msg.content_type == "document" and msg.documet.mime_type == "application/pdf"):
+        path = msg.documet.file_id
+        requests.post(url2,"file")
 
 bot.infinity_polling()

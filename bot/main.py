@@ -9,6 +9,7 @@ import json
 import random
 
 url="http://212.109.192.158/pdfun/api/v1.0/get_code"
+url2="http://212.109.192.158/pdfun/api/v1.0/merge_files"
 bot = telebot.TeleBot(config.token)
 person = { "persons": [] }
 
@@ -26,6 +27,11 @@ def check_code(msg):
     print(msg.text)
     r = requests.post(url, data={"code":msg.text})
     print(r.text)
+
+@bot.message_handler(commands=['command2'])
+def merge_files(message):
+    msg = bot.send_message(message.chat.id, "Send files to merge")
+    bot.register_next_step_handler(msg,merge)
 
 
 bot.infinity_polling()
