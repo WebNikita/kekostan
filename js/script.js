@@ -131,11 +131,14 @@ function setFile(inputFiles) {
   });
   console.log("files:");
   console.log(files);
-  let str = "";
+  let node = document.createElement("ul");
+
+  dragText.appendChild(node);
   for (let i = 0; i < files.length; i++) {
-    str += files[i].name + "\n";
+    let li = document.createElement("li");
+    li.textContent = files[i].name;
+    node.appendChild(li);
   }
-  dragText.textContent = str;
 }
 
 function sendFile(funcType) {
