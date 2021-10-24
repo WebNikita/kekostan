@@ -37,27 +37,36 @@
     </header>
 
     <section>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8 center-align">
+            <div class="drag-area center-align">
+              <header>Drag & Drop to Upload File</header>
+              <button id="browse-button">Browse File</button>
+              <button id="clear-button">Clear</button>
+              <input
+                type="file"
+                hidden
+                id="file-input"
+                accept=".pdf"
+                multiple
+              />
+            </div>
             <h2 class="center-align">Telegram Code</h2>
-            <div id="telegram-code" class="card-panel grey darken-4 white-text z-depth-2 center">КОД</div>
+            <div id="telegram-code" class="grey darken-4 white-text z-depth-2 center-align">КОД</div>
           </div>
           <div class="col center-align" >
-            <h2 class="center-align">Функции</h2>
-            <div class="btn-group-vertical z-depth-2">
+            <h2 class="center-align">Functions</h2>
+            <div class="btn-group-vertical z-depth-2 function-list">
               <button type="button" class="btn btn-large btn-light waves-effect waves-dark" id="merge-button">
-                Объединить PDF
+                Merge PDF files
               </button>
-              <button type="button" class="btn btn-large grey darken-4 white-text waves-effect waves-light">Telegram</button>
+              <button type="button" class="btn btn-large grey darken-4 white-text waves-effect waves-light">Download PDF files from Telegram</button>
             </div>
           </div>
         </div>
       </div>
     </section>
-    <div class="drag-area">
-      <header>Drag & Drop to Upload File</header>
-      <input type="file" hidden onChange="setFile(this)" id="myfileinput" multiple>
-      <button>Browse File</button>
-    </div>
-
     <!-- <script src="../getCode.js"></script> -->
     <script src="../js/script.js"></script>
     <script src="../js/func.js"></script>

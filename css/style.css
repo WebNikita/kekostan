@@ -5,17 +5,31 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-#telegram-code {
-  text-align: center;
-  margin-top: 20px;
+
+body {
+	background: #eeeeee;
 }
-.drag-area {
+
+#telegram-code {
+	width: 35vh;
+	margin: auto;
+	font-size: 210%;
+}
+
+.function-list {
+	width: 75%;
+	margin-top: 1vh;
+	font-family: "Noto Sans", sans-serif;
+}
+
+.drag-area{
   border: 2px dashed black;
-  height: auto;
-  background-color: blueviolet;
-  max-width: 190px;
+  height: 74vh;
+  background-color: white;
   width: auto;
   border-radius: 5px;
+  margin-top: 1vh;
+  margin-bottom: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
