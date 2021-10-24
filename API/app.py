@@ -28,8 +28,8 @@ session = DBSession()
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
     
-    if os.path.isfile('/home/pdf/kekostan/API/users_files/test.pdf'):
-        os.remove('/home/pdf/kekostan/API/users_files/test.pdf')
+    if os.path.isfile('./users_files/test.pdf'):
+        os.remove('./users_files/test.pdf')
     
     path_bufer = []
     data_files = request.files.lists()
@@ -41,10 +41,10 @@ def merge_files():
         print(user_code)
         for items in data[1]:
             file_name = secure_filename(items.filename)
-            items.save(f"/home/pdf/kekostan/API/users_files/{file_name}")
-            path_bufer.append(f"/home/pdf/kekostan/API/users_files/{file_name}")
-    pdf_functions.merge_files(path_bufer, "/home/pdf/kekostan/API/users_files/test.pdf")
-    return send_from_directory("/home/pdf/kekostan/API/users_files/", "test.pdf", as_attachment=True)
+            items.save(f"./users_files/{file_name}")
+            path_bufer.append(f"./users_files/{file_name}")
+    pdf_functions.merge_files(path_bufer, "./users_files/test.pdf")
+    return send_from_directory("./users_files/", "test.pdf", as_attachment=True)
 
 
 # Роут для отправки кода на вебморду
@@ -76,7 +76,9 @@ def send_file_to_web():
     user_code = json.loads(payload)["user_code"]
     try:
         print(user_code)
-        # print(payload)
+        if os.path.isdir(f'./users_files/{user_code}'):
+            print(os.listdir(f'./user_files/{user_code}'))
+            # return json.dumps({'file_path': []})
     except Exception as e:
         print("Something goes wrong " + str(e))
     return str(payload)
@@ -92,9 +94,9 @@ def save_file_from_tg():
     for data in data_files:
         print(data[1])
         file_name = secure_filename(data[1][0].filename)
-        if not os.path.isdir(f'/home/pdf/kekostan/API/users_files/{data[0]}'):
-            os.mkdir(f'/home/pdf/kekostan/API/users_files/{data[0]}')
-        data[1][0].save(f"/home/pdf/kekostan/API/users_files/{data[0]}/{file_name}")
+        if not os.path.isdir(f'./users_files/{data[0]}'):
+            os.mkdir(f'./users_files/{data[0]}')
+        data[1][0].save(f"./users_files/{data[0]}/{file_name}")
     return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
