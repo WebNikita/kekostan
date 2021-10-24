@@ -67,8 +67,14 @@ def send_file_to_web():
     try:
         print(user_code)
         if os.path.isdir(f"./users_files/{user_code}"):
-            print(os.listdir(f"./user_files/{user_code}"))
-            # return json.dumps({'file_path': []})
+            return json.dumps(
+                {
+                    "file_path": [
+                        f"{os.getcwd()}/users_files/{user_code}/{path}"
+                        for path in os.listdir(f"./users_files/{user_code}")
+                    ]
+                }
+            )
     except Exception as e:
         print("Something goes wrong " + str(e))
     return str(payload)
