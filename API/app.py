@@ -61,8 +61,11 @@ def get_code():
 @app.route("/pdfun/api/v1.0/auth_from_code", methods=["POST"])
 def auth_from_code():
     data_code = request.json
-    print(data_code)
-    return jsonify({"user_code": 'Ok'})
+    print(data_code.get('code'))
+    if session.query(Users).filter_by(key=data_code.get('code')).first():
+        return jsonify({"user_code": True})
+    else:
+        return jsonify({"user_code": False})
 
 
 @app.route("/pdfun/api/v1.0/get_file_from_tg", methods=["POST"])
