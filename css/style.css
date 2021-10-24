@@ -6,18 +6,30 @@
   font-family: "Poppins", sans-serif;
 }
 
+body {
+	background: #eeeeee;
+}
+
 #telegram-code {
 	width: 35vh;
 	margin: auto;
-	font-size: xx-large;
+	font-size: 210%;
+}
+
+.function-list {
+	width: 75%;
+	margin-top: 1vh;
+	font-family: "Noto Sans", sans-serif;
 }
 
 .drag-area{
   border: 2px dashed black;
-  height: 75vh;
+  height: 74vh;
   background-color: white;
   width: auto;
   border-radius: 5px;
+  margin-top: 1vh;
+  margin-bottom: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
