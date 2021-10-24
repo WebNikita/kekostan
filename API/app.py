@@ -89,7 +89,8 @@ def save_file_from_tg():
     print(request.files)
     # print(data_files)
     counter = 0
-    print(data_files[0], data_files[1])
+    for data in data_files:
+        print(data])
     return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
