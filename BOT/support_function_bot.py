@@ -11,7 +11,7 @@ def safe_files(file, file_name, user_id):
         new_file.write(file)
 
 
-def send_files_to_api(file_list, user_id):
+def send_files_to_api(file_list, user_id, key):
     
     files = {}
 
@@ -20,7 +20,7 @@ def send_files_to_api(file_list, user_id):
     for items in file_list:
         file = open(f'user_files/{user_id}/{items}', 'rb')
         files['file'] = file
-        requests.post(url, files=files)
+        requests.post(url, files=files, user_key = key)
         file.close()
 
     
