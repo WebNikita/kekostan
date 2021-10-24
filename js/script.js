@@ -25,11 +25,11 @@ mergeBtn.onclick = function () {
 
 telegramBtn.onclick = () => {
   getFileFromTg();
-};
+}; 
 
 clearButton.onclick = () => {
   files = [];
-  dragText.textContent = "Drag & Drop to Upload File";
+  dragText.textContent = "Choose or drop files here";
 };
 
 browseButton.onclick = () => {
