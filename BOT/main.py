@@ -25,21 +25,21 @@ def send_code_to_API(message):
         if code_request.json()['status'] == True:
             key_bufer[message.from_user.id] = code
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            button_go_into_start = types.KeyboardButton("Начало")
-            msg = bot.send_message(message.chat.id,"Успех! Загрузите файл (Один!)", reply_markup=keyboard)
+            button_go_into_start = types.KeyboardButton("To Start.")
+            msg = bot.send_message(message.chat.id,"Connected!\nSend file.", reply_markup=keyboard)
             bot.register_next_step_handler(msg, take_file, "send")
         else:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            button_go_into_start = types.KeyboardButton("Начало")
-            button_go_into_bot = types.KeyboardButton("Продолжить на сайте")
+            button_go_into_start = types.KeyboardButton("To Start.")
+            button_go_into_bot = types.KeyboardButton("Forward to site.")
             keyboard.add(button_go_into_bot ,button_go_into_start)
-            bot.send_message(message.chat.id,"Вы ввели не тот код!", reply_markup=keyboard)    
+            bot.send_message(message.chat.id,"Wrong Code.", reply_markup=keyboard)    
     else:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_into_start = types.KeyboardButton("Начало")
-        button_go_into_bot = types.KeyboardButton("Продолжить на сайте")
+        button_go_into_start = types.KeyboardButton("To Start.")
+        button_go_into_bot = types.KeyboardButton("Forward to site.")
         keyboard.add(button_go_into_bot ,button_go_into_start)
-        bot.send_message(message.chat.id,"Вы ввели что то не то - нужны цифры", reply_markup=keyboard)
+        bot.send_message(message.chat.id,"Numbers, pls.", reply_markup=keyboard)
 
 
 def take_file(message, *args):
@@ -54,26 +54,26 @@ def take_file(message, *args):
             support_function_bot.safe_files(downloaded_file, file_name, message.from_user.id)
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             if type == "send":
-                button_go_into_start = types.KeyboardButton("Конец загрузки")
-                button_go_into_bot = types.KeyboardButton("Загрузить ещё файл")
+                button_go_into_start = types.KeyboardButton("Send files to site.")
+                button_go_into_bot = types.KeyboardButton("Download file to site.")
             elif type == "merge":
-                button_go_into_start = types.KeyboardButton("End files for merge")
-                button_go_into_bot = types.KeyboardButton("Download file for merge")
+                button_go_into_start = types.KeyboardButton("Send files for merge.")
+                button_go_into_bot = types.KeyboardButton("Download file for merge.")
             keyboard.add(button_go_into_bot ,button_go_into_start)
-            bot.send_message(message.chat.id,"Что делаем?", reply_markup=keyboard)
+            bot.send_message(message.chat.id,"What next?", reply_markup=keyboard)
         else:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            button_go_into_start = types.KeyboardButton("Начало")
-            button_go_into_bot = types.KeyboardButton("Продолжить на сайте")
+            button_go_into_start = types.KeyboardButton("To Start.")
+            button_go_into_bot = types.KeyboardButton("Send files to site.")
             keyboard.add(button_go_into_bot ,button_go_into_start)
-            bot.send_message(message.chat.id,"Нужно загрузить pdf файл", reply_markup=keyboard)
+            bot.send_message(message.chat.id,"Need for PDF file.", reply_markup=keyboard)
         
     else:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_into_start = types.KeyboardButton("Начало")
-        button_go_into_bot = types.KeyboardButton("Продолжить на сайте")
+        button_go_into_start = types.KeyboardButton("To Start.")
+        button_go_into_bot = types.KeyboardButton("Send files to site.")
         keyboard.add(button_go_into_bot ,button_go_into_start)
-        bot.send_message(message.chat.id,"Нужно загрузить pdf файл", reply_markup=keyboard)
+        bot.send_message(message.chat.id,"Need for PDF file.", reply_markup=keyboard)
 
 
 
@@ -81,54 +81,57 @@ def take_file(message, *args):
 @bot.message_handler(commands=['start'])
 def start_message(message):
     start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button_go_to_web = types.KeyboardButton("Продолжить на сайте")
-    button_go_into_bot = types.KeyboardButton("Хочу в боте")
+    button_go_to_web = types.KeyboardButton("Send to site.")
+    button_go_into_bot = types.KeyboardButton("Work in bot.")
     start_keyboard.add(button_go_to_web, button_go_into_bot)	
-    bot.send_message(message.chat.id,"Добро пожаловать в бота для конвертации PDF", reply_markup=start_keyboard)
+    bot.send_message(message.chat.id,"Welcome to KekistanPDF", reply_markup=start_keyboard)
 
 @bot.message_handler(content_types='text')
 def check_text(message):
     global key_bufer
-    if message.text == 'Продолжить на сайте':
+    if message.text == 'Send to site.':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_into_start = types.KeyboardButton("Начало")
+        button_go_into_start = types.KeyboardButton("To Start.")
         keyboard.add(button_go_into_start)	
-        prev_message = bot.send_message(message.chat.id,"Введите код с сайта:", reply_markup=keyboard)
+        prev_message = bot.send_message(message.chat.id,"Input code from site:", reply_markup=keyboard)
         bot.register_next_step_handler(prev_message, send_code_to_API)
-    elif message.text == "Хочу в боте":
+    elif message.text == "Work in bot.":
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_merge = types.KeyboardButton("Merge PDFs")
         keyboard.add(button_merge)
         msg = bot.send_message(message.chat.id, "Choose function",reply_markup=keyboard)
         bot.register_next_step_handler(msg,funcs)
-    elif message.text == 'Загрузить ещё файл':
+    elif message.text == 'Download file to site.':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_into_start = types.KeyboardButton("Начало")
-        msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
+        button_go_into_start = types.KeyboardButton("To Start.")
+        msg = bot.send_message(message.chat.id,"Send file", reply_markup=keyboard)
         bot.register_next_step_handler(msg, take_file, "send")
     elif message.text == 'Download file for merge':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_into_start = types.KeyboardButton("Начало")
-        msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
+        button_go_into_start = types.KeyboardButton("To Start.")
+        msg = bot.send_message(message.chat.id,"Send file", reply_markup=keyboard)
         bot.register_next_step_handler(msg, take_file, "merge")
-    elif message.text == 'Конец загрузки':
+    elif message.text == 'Send files to site.':
         print(key_bufer)
         user_files = os.listdir(f'user_files/{message.from_user.id}')
         support_function_bot.send_files_to_api(user_files, message.from_user.id, key_bufer[int(message.from_user.id)])
         start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_to_web = types.KeyboardButton("Продолжить на сайте")
-        button_go_into_bot = types.KeyboardButton("Хочу в боте")
+        button_go_to_web = types.KeyboardButton("Send to site.")
+        button_go_into_bot = types.KeyboardButton("Work in bot.")
         start_keyboard.add(button_go_to_web, button_go_into_bot)	
-        bot.send_message(message.chat.id,"Файлы успешно отправлены на сайт", reply_markup=start_keyboard)
-    elif message.text == 'End files for merge':
+        bot.send_message(message.chat.id,"Succsessful send to site.", reply_markup=start_keyboard)
+    elif message.text == 'Send files for merge.':
         print(key_bufer)
         user_files = os.listdir(f'user_files/{message.from_user.id}')
         support_function_bot.send_files_to_api_mer(user_files, message.from_user.id)
         start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        button_go_to_web = types.KeyboardButton("Продолжить на сайте")
-        button_go_into_bot = types.KeyboardButton("Хочу в боте")
-        start_keyboard.add(button_go_to_web, button_go_into_bot)	
-        bot.send_message(message.chat.id,"Файлы успешно отправлены на сайт", reply_markup=start_keyboard)
+        button_go_to_web = types.KeyboardButton("Send to site.")
+        button_go_into_bot = types.KeyboardButton("Work in bot.")
+        start_keyboard.add(button_go_to_web, button_go_into_bot)
+        file = open('user_files/doc.pdf', 'rb')
+        bot.send_document(message.chat.id, file)
+        bot.send_message(message.chat.id,"Succsessful send to site.", reply_markup=start_keyboard)
+        file.close()
 
 
 def funcs(msg):

@@ -17,32 +17,39 @@ def safe_files(file, file_name, user_id):
         new_file.write(file)
 
 
-def send_files_to_api(file_list, user_id, key):
-
-    files = {}
-
-    url = url_send
-
-    for items in file_list:
-        file = open(f'user_files/{user_id}/{items}', 'rb')
-        print(key)
-        multiple_files = [
-            (str(key),(file)),
-        ]
-        requests.post(url, files=multiple_files)
-        file.close()
-
 def send_files_to_api_mer(file_list, user_id):
 
     files = {}
 
     url = url_merge
-    key = "lol"
 
-    print("lol")
+    key = "merge"
+
     for items in file_list:
-        file = open(f"user_files/{user_id}/{items}", "rb")
-        multiple_files = [("pdf", (file)), ("text", (key))]
+        file = open(f'user_files/{user_id}/{items}', 'rb')
+        multiple_files = [
+            (str(key),(file)),
+        ]
         r = requests.post(url, files=multiple_files)
-        print(r.text)
+
+        f = open(f"user_files/doc.pdf", 'wb')
+        for chunk in r.iter_content(): 
+            if chunk:
+                f.write(chunk)
+
+        file.close()
+        return f
+
+def send_files_to_api(file_list, user_id, key):
+    
+    files = {}
+
+    url = "http://212.109.192.158/pdfun/api/v1.0/save_file_from_tg"
+
+    for items in file_list:
+        file = open(f'user_files/{user_id}/{items}', 'rb')
+        multiple_files = [
+            (str(key),(file)),
+        ]
+        requests.post(url, files=multiple_files)
         file.close()
