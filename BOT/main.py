@@ -2,21 +2,29 @@ import telebot
 from telebot import types
 
 import requests
-import json
+import os
+
+from telebot.apihelper import download_file
+
+import support_function_bot
 
 token = '1273078054:AAGDTUYC56-Lf2EtJFdVC_OufB-walPDECA'
 
 bot = telebot.TeleBot(token)
 
+key_bufer = {}
+
 
 def send_code_to_API(message):
+    global key_bufer
     code = message.text
     if code.isdigit():
         code_request = requests.post('http://212.109.192.158//pdfun/api/v1.0/auth_from_code', json={'code': code})
         if code_request.json()['status'] == True:
+            key_bufer[message.from_user.id] = code
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Начало")
-            msg = bot.send_message(message.chat.id,"Успех! Загрузите файл", reply_markup=keyboard)
+            msg = bot.send_message(message.chat.id,"Успех! Загрузите файл (Один!)", reply_markup=keyboard)
             bot.register_next_step_handler(msg, take_file)
         else:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -35,6 +43,10 @@ def send_code_to_API(message):
 def take_file(message):
     if message.content_type == 'document':
         if message.document.mime_type == 'application/pdf':
+            file_info = bot.get_file(message.document.file_id)
+            downloaded_file = bot.download_file(file_info.file_path)
+            file_name = message.document.file_name
+            support_function_bot.safe_files(downloaded_file, file_name, message.from_user.id)
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Конец загрузки")
             button_go_into_bot = types.KeyboardButton("Загрузить ещё файл")
@@ -67,6 +79,7 @@ def start_message(message):
 
 @bot.message_handler(content_types='text')
 def check_text(message):
+    global key_bufer
     if message.text == 'Продолжить на сайте':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_into_start = types.KeyboardButton("Начало")
@@ -79,7 +92,9 @@ def check_text(message):
         msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
         bot.register_next_step_handler(msg, take_file)
     elif message.text == 'Конец загрузки':
-        
+        print(key_bufer)
+        user_files = os.listdir(f'user_files/{message.from_user.id}')
+        support_function_bot.send_files_to_api(user_files, message.from_user.id, key_bufer[int(message.from_user.id)])
         start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_to_web = types.KeyboardButton("Продолжить на сайте")
         button_go_into_bot = types.KeyboardButton("Хочу в боте")

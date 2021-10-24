@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, session, send_from_directory
 from flask.helpers import send_file
 from flask.wrappers import Request
+import requests
 from flask_cors import CORS
 import os
 import shutil
@@ -26,9 +27,9 @@ session = DBSession()
 # Роут для склеивания файлов PDF
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
-
-    # if os.path.isfile('/home/pdf/kekostan/API/users_files/test.pdf'):
-    #     os.remove('/home/pdf/kekostan/API/users_files/test.pdf')
+    
+    if os.path.isfile('./users_files/test.pdf'):
+        os.remove('./users_files/test.pdf')
     path_bufer = []
     for filepath in save_files(request):
         path_bufer.append(filepath)
@@ -65,11 +66,26 @@ def send_file_to_web():
     user_code = json.loads(payload)["user_code"]
     try:
         print(user_code)
-        # print(payload)
+        if os.path.isdir(f'./users_files/{user_code}'):
+            print(os.listdir(f'./user_files/{user_code}'))
+            # return json.dumps({'file_path': []})
     except Exception as e:
         print("Something goes wrong " + str(e))
     return str(payload)
-
+@app.route("/pdfun/api/v1.0/save_file_from_tg", methods=["POST"])
+def save_file_from_tg():
+    data_files = request.files.lists()
+    files_bufer = {}
+    print(request.files)
+    # print(data_files)
+    counter = 0
+    for data in data_files:
+        print(data[1])
+        file_name = secure_filename(data[1][0].filename)
+        if not os.path.isdir(f'./users_files/{data[0]}'):
+            os.mkdir(f'./users_files/{data[0]}')
+        data[1][0].save(f"./users_files/{data[0]}/{file_name}")
+    return 'ok'
 
 @app.route("/pdfun/api/v1.0/flip_pages", methods=["POST"])
 def flip_pages():
@@ -98,6 +114,7 @@ def split_pages():
     )
     shutil.rmtree(f"./users_files/{fname}")
     return send_from_directory("./users_files/", f"{fname}.zip", as_attachment=True)
+
 
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
