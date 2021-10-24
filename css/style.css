@@ -10,6 +10,12 @@ body {
 	background: #eeeeee;
 }
 
+li {
+	background-color: #f8f9fa;
+	border : 1px thick double black;
+	margin: 10px 10px;
+}
+
 #telegram-code {
 	width: 35vh;
 	margin: auto;
@@ -20,6 +26,34 @@ body {
 	width: 75%;
 	margin-top: 1vh;
 	font-family: "Noto Sans", sans-serif;
+}
+
+.white_btn{
+	background-color: #f8f9fa;
+	transition-duration: 0.2s;
+}
+
+.white_btn:hover{
+	background-color: green;
+	color: white;
+}
+
+.white_btn:active, .white_btn:focus{
+	background-color: green;
+}
+
+.black_btn {
+	background-color: #212121;
+	transition-duration: 0.2s;
+}
+
+.black_btn:hover, .black_btn:focus {
+	background-color: green;
+	color: white;
+}
+
+.btn-control {
+	width: 20vh;
 }
 
 .drag-area{
@@ -39,7 +73,7 @@ body {
   border: 2px solid black;
 }
 .drag-area header {
-  font-size: 15px;
+  font-size: x-large;
   font-weight: 100;
   color: black;
 }
