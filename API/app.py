@@ -85,7 +85,7 @@ def send_file_to_web():
 
 @app.route("/pdfun/api/v1.0/save_file_from_tg", methods=["POST"])
 def save_file_from_tg():
-    print(request.data.decode('utf-8'))
+    print(request.files)
     return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
