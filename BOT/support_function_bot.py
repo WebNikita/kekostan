@@ -24,8 +24,11 @@ def send_files_to_api(file_list, user_id, key):
     url = url_send
 
     for items in file_list:
-        file = open(f"user_files/{user_id}/{items}", "rb")
-        multiple_files = [("pdf", (file)), ("text", (key))]
+        file = open(f'user_files/{user_id}/{items}', 'rb')
+        print(key)
+        multiple_files = [
+            (str(key),(file)),
+        ]
         requests.post(url, files=multiple_files)
         file.close()
 
