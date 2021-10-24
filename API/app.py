@@ -60,7 +60,7 @@ def get_code():
 # Роут для авторизации пользователя по коду
 @app.route("/pdfun/api/v1.0/auth_from_code", methods=["POST"])
 def auth_from_code():
-    return jsonify({"user_code": support_functions.create_code(4)})
+    return jsonify({"user_code": 'Ok'})
 
 
 @app.route("/pdfun/api/v1.0/get_file_from_tg", methods=["POST"])
