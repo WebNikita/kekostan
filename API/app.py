@@ -70,7 +70,16 @@ def auth_from_code():
 
 @app.route("/pdfun/api/v1.0/get_file_from_tg", methods=["POST"])
 def send_file_to_web():
-    pass
+    import json
+
+    payload = request.data.decode("utf-8")
+    user_code = json.loads(payload)["user_code"]
+    try:
+        print(user_code)
+        # print(payload)
+    except Exception as e:
+        print("Something goes wrong " + str(e))
+    return str(payload)
 
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
