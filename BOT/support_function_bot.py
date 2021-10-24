@@ -18,7 +18,7 @@ def send_files_to_api(file_list, user_id):
     url = "http://212.109.192.158/pdfun/api/v1.0/save_file_from_tg"
 
     for items in file_list:
-        file = open(f'user_files/{user_id}/{items}')
+        file = open(f'user_files/{user_id}/{items}', 'rb')
         files['file'] = file
         requests.post(url, files=files)
         file.close()
