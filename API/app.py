@@ -60,7 +60,7 @@ def get_code():
 # Роут для авторизации пользователя по коду
 @app.route("/pdfun/api/v1.0/auth_from_code", methods=["POST"])
 def auth_from_code():
-    data_code = request.data
+    data_code = request.json
     print(data_code)
     return jsonify({"user_code": 'Ok'})
 

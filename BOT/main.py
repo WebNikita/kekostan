@@ -11,7 +11,7 @@ bot = telebot.TeleBot(token)
 def send_code_to_API(message):
     code = message.text
     if code.isdigit():
-        code_request = requests.post('http://212.109.192.158//pdfun/api/v1.0/auth_from_code', data={'code': code})
+        code_request = requests.post('http://212.109.192.158//pdfun/api/v1.0/auth_from_code', json={'code': code})
         print(code_request)
     else:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
