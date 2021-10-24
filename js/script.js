@@ -2,6 +2,7 @@ let telegramCode = document.getElementById("telegram-code");
 let files = [];
 let mergeBtn = document.getElementById("merge-button");
 let flipBtn = document.getElementById("flip-button");
+let splitBtn = document.getElementById("split-button");
 let telegramBtn = document.getElementById("telegram-button");
 let userCode;
 // let convertButton = document.getElementById("convert-button");
@@ -47,6 +48,10 @@ browseButton.onclick = () => {
 };
 flipBtn.onclick = () => {
   sendFile("flip");
+};
+
+splitBtn.onclick = () => {
+  sendFile("split");
 };
 
 fileInput.addEventListener("change", function () {
@@ -143,7 +148,11 @@ function sendFile(funcType) {
     alert("For merge there are should be at least 2 files!");
     return 1;
   }
-  req_dict = { flip: "flip_pages", merge: "merge_files" };
+  if (funcType === "split" && files.length !== 1) {
+    alert("For split there is should be only 1 file!");
+    return 1;
+  }
+  req_dict = { flip: "flip_pages", merge: "merge_files", split: "split_pages" };
 
   // 1. Создаём новый XMLHttpRequest-объект
   let xhr = new XMLHttpRequest();
@@ -172,6 +181,9 @@ function sendFile(funcType) {
         blobType = "application/pdf";
       } else if (funcType === "flip") {
         returnName = "rotated.zip";
+        blobType = "application/zip";
+      } else if (funcType === "split") {
+        returnName = "splitted.zip";
         blobType = "application/zip";
       }
       var blob = new Blob([this.response], { type: blobType });

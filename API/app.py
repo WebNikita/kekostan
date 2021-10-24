@@ -73,10 +73,7 @@ def send_file_to_web():
 
 @app.route("/pdfun/api/v1.0/flip_pages", methods=["POST"])
 def flip_pages():
-
-    path_bufer = []
     for filepath in save_files(request):
-        path_bufer.append(filepath)
         pdf_functions.flip_pages(filepath)
     shutil.make_archive(
         f"./users_files/rotated",
@@ -85,6 +82,22 @@ def flip_pages():
     )
     shutil.rmtree("./users_files/rotated")
     return send_from_directory("./users_files/", f"rotated.zip", as_attachment=True)
+
+
+@app.route("/pdfun/api/v1.0/split_pages", methods=["POST"])
+def split_pages():
+    for filepath in save_files(request):
+        print(filepath)
+        pdf_functions.split_pages(filepath)
+    fname = os.path.basename(filepath).split(".")[0]
+    print("fname" + fname)
+    shutil.make_archive(
+        f"./users_files/{fname}",
+        "zip",
+        f"./users_files/{fname}",
+    )
+    shutil.rmtree(f"./users_files/{fname}")
+    return send_from_directory("./users_files/", f"{fname}.zip", as_attachment=True)
 
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])

@@ -35,3 +35,17 @@ def flip_pages(src_pdf, pages_for_flip=None):
                 "wb",
             ) as pdf_file_rotated:
                 pdf_writer.write(pdf_file_rotated)
+
+
+def split_pages(src_pdf):
+    fn = osp.basename(src_pdf).split(".")[0]
+    split_dir = osp.join("./users_files", fn)
+    os.makedirs(split_dir, exist_ok=True)
+    with open(src_pdf, "rb") as pdf_file:
+        pdf_reader = PdfFileReader(pdf_file)
+        for i in range(pdf_reader.numPages):
+            pdf_writer = PdfFileWriter()
+            pdf_writer.addPage(pdf_reader.getPage(i))
+            output_file_name = f"./{split_dir}/{fn}_page{i}.pdf"
+            with open(output_file_name, "wb") as output_file:
+                pdf_writer.write(output_file)
