@@ -1,6 +1,7 @@
 let span = document.getElementById("telegram-code");
 let files = [];
 let mergeBtn = document.getElementById("merge-button");
+let telegramBtn = document.getElementById("telegram-button");
 let user_code;
 
 //selecting all required elements
@@ -12,6 +13,66 @@ let fileInput = document.getElementById("file-input");
 
 document.addEventListener("DOMContentLoaded", () => {
   getCode();
+});
+
+mergeBtn.onclick = function () {
+  if (files.length) {
+    sendFile("merge");
+  } else {
+    alert("No file uploaded!");
+  }
+};
+
+telegramBtn.onclick = () => {
+  getFileFromTg();
+};
+
+clearButton.onclick = () => {
+  files = [];
+  dragText.textContent = "Drag & Drop to Upload File";
+};
+
+browseButton.onclick = () => {
+  fileInput.click();
+  //if user click on the browseButton then the input also clicked
+};
+
+fileInput.addEventListener("change", function () {
+  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+  let fileinp = this.files;
+  setFile(fileinp);
+});
+
+// //If user Drag File Over DropArea
+dropArea.addEventListener("dragover", (event) => {
+  event.preventDefault(); //preventing from default behaviour
+  dragText.textContent = "Release them!";
+});
+
+//If user leave dragged File from DropArea
+dropArea.addEventListener("dragleave", () => {
+  dragText.textContent = "Move Here!";
+});
+
+//If user drop File on DropArea
+dropArea.addEventListener("drop", (event) => {
+  event.preventDefault(); //preventing from default behaviour
+  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+  let str = "";
+  let fileinp = event.dataTransfer.files;
+  console.log(typeof fileinp);
+  if (
+    Array.prototype.every.call(fileinp, (file) => file.name.endsWith("*.pdf"))
+  ) {
+    for (let i = 0; i < fileinp.length; i++) {
+      str += fileinp[i].name + "\n";
+    }
+    dragText.textContent = str;
+    setFile(fileinp);
+  } else {
+    dragText.textContent = "Drag & Drop to Upload File";
+    alert("Uploading files should be .pdf format");
+  }
 });
 
 function getCode() {
@@ -56,14 +117,6 @@ function getCode() {
     console.log("Запрос не удался");
   };
 }
-
-mergeBtn.onclick = function () {
-  if (files.length) {
-    sendFile("merge");
-  } else {
-    alert("No file uploaded!");
-  }
-};
 
 function setFile(inputFiles) {
   // let inputFiles = fileInput.files;
@@ -133,50 +186,47 @@ function sendFile(funcType) {
   files = [];
 }
 
-clearButton.onclick = () => {
-  files = [];
-  dragText.textContent = "Drag & Drop to Upload File";
-};
+function getFileFromTg() {
+  let xhr = new XMLHttpRequest();
 
-browseButton.onclick = () => {
-  fileInput.click();
-  //if user click on the browseButton then the input also clicked
-};
+  url = "http://localhost:5000/pdfun/api/v1.0/get_file_from_tg";
+  // 2. Настраиваем его: GET-запрос по URL /article/.../load
+  xhr.open("POST", url, true);
+  userCodeJson = JSON.stringify({ user_code: user_code });
+  console.log(userCodeJson);
+  console.log(typeof userCodeJson);
+  xhr.send(userCodeJson);
 
-fileInput.addEventListener("change", function () {
-  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  let fileinp = this.files;
-  setFile(fileinp);
-});
+  // 4. Этот код сработает после того, как мы получим ответ сервера
+  xhr.onload = function () {
+    if (xhr.status != 200) {
+      // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+      console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+    } else {
+      // если всё прошло гладко, выводим результат
+      console.log("xhr.response:");
+      console.log(xhr.response.toString());
+      console.log(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
+      // res = JSON.parse(xhr.response);
+      // user_code = res["user_code"];
+      // console.log("user code:");
+      // console.log(user_code);
 
-// //If user Drag File Over DropArea
-dropArea.addEventListener("dragover", (event) => {
-  event.preventDefault(); //preventing from default behaviour
-  dragText.textContent = "Release them!";
-});
-
-//If user leave dragged File from DropArea
-dropArea.addEventListener("dragleave", () => {
-  dragText.textContent = "Move Here!";
-});
-
-//If user drop File on DropArea
-dropArea.addEventListener("drop", (event) => {
-  event.preventDefault(); //preventing from default behaviour
-  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  let str = "";
-  let fileinp = event.dataTransfer.files;
-  console.log(typeof fileinp);
-  if (
-    Array.prototype.every.call(fileinp, (file) => file.name.endsWith("*.pdf"))
-  ) {
-    for (let i = 0; i < fileinp.length; i++) {
-      str += fileinp[i].name + "\n";
+      // span.textContent = user_code;
+      // console.log("files:");
+      // console.log(files);
     }
-    dragText.textContent = str;
-    setFile(fileinp);
-  } else {
-    dragText.textContent = "Drag & Drop to Upload File";
-    alert("Uploading files should be .pdf format");
-  }
-});
+  };
+
+  xhr.onprogress = function (event) {
+    if (event.lengthComputable) {
+      console.log(`Получено ${event.loaded} из ${event.total} байт`);
+    } else {
+      console.log(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
+    }
+  };
+
+  xhr.onerror = function () {
+    console.log("Запрос не удался");
+  };
+}

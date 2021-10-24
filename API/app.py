@@ -26,10 +26,10 @@ session = DBSession()
 # Роут для склеивания файлов PDF
 @app.route("/pdfun/api/v1.0/merge_files", methods=["POST"])
 def merge_files():
-    
-    if os.path.isfile('/home/nikita/kekostan/API/users_files/test.pdf'):
-        os.remove('/home/nikita/kekostan/API/users_files/test.pdf')
-    
+
+    if os.path.isfile("/home/nikita/kekostan/API/users_files/test.pdf"):
+        os.remove("/home/nikita/kekostan/API/users_files/test.pdf")
+
     path_bufer = []
     data_info = request
     data_files = request.files.lists()
@@ -41,10 +41,10 @@ def merge_files():
         print(user_code)
         for items in data[1]:
             file_name = secure_filename(items.filename)
-            items.save(f"/home/nikita/kekostan/API/users_files/{file_name}")
-            path_bufer.append(f"/home/nikita/kekostan/API/users_files/{file_name}")
-    pdf_functions.merge_files(path_bufer, "/home/nikita/kekostan/API/users_files/test.pdf")
-    return send_from_directory("/home/nikita/kekostan/API/users_files/", "test.pdf", as_attachment=True)
+            items.save(f"users_files/{file_name}")
+            path_bufer.append(f"users_files/{file_name}")
+    pdf_functions.merge_files(path_bufer, "users_files/test.pdf")
+    return send_from_directory("users_files/", "test.pdf", as_attachment=True)
 
 
 # Роут для отправки кода на вебморду
@@ -65,7 +65,16 @@ def auth_from_code():
 
 @app.route("/pdfun/api/v1.0/get_file_from_tg", methods=["POST"])
 def send_file_to_web():
-    pass
+    import json
+
+    payload = request.data.decode("utf-8")
+    user_code = json.loads(payload)["user_code"]
+    try:
+        print(user_code)
+        # print(payload)
+    except Exception as e:
+        print("Something goes wrong " + str(e))
+    return str(payload)
 
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
