@@ -91,7 +91,7 @@ def save_file_from_tg():
     counter = 0
     for data in data_files:
         print(data[1])
-        file_name = secure_filename(data[1].filename)
+        file_name = secure_filename(data[1][0].filename)
         os.mkdir(f'/home/pdf/kekostan/API/users_files/{data[0]}')
         data[1].save(f"/home/pdf/kekostan/API/users_files/{data[0]}/{file_name}")
     return 'ok'
