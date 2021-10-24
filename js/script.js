@@ -62,12 +62,8 @@ dropArea.addEventListener("drop", (event) => {
   let fileinp = event.dataTransfer.files;
   console.log(typeof fileinp);
   if (
-    Array.prototype.every.call(fileinp, (file) => file.name.endsWith("*.pdf"))
+    Array.prototype.every.call(fileinp, (file) => file.name.endsWith(".pdf"))
   ) {
-    for (let i = 0; i < fileinp.length; i++) {
-      str += fileinp[i].name + "\n";
-    }
-    dragText.textContent = str;
     setFile(fileinp);
   } else {
     dragText.textContent = "Drag & Drop to Upload File";
@@ -131,6 +127,7 @@ function setFile(inputFiles) {
   });
   console.log("files:");
   console.log(files);
+  dragText.textContent = "";
   let node = document.createElement("ul");
 
   dragText.appendChild(node);
