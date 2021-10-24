@@ -34,5 +34,6 @@ dropArea.addEventListener("drop", (event) => {
     str += (fileinp[i].name + "\n");
   }
   dropArea.textContent = str;
-  //sendFile(this);
+  sendFile(fileinp);
+  // input.;
 });
