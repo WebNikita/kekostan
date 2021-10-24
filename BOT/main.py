@@ -92,8 +92,9 @@ def check_text(message):
         msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
         bot.register_next_step_handler(msg, take_file)
     elif message.text == 'Конец загрузки':
+        print(key_bufer)
         user_files = os.listdir(f'user_files/{message.from_user.id}')
-        support_function_bot.send_files_to_api(user_files, message.from_user.id, key_bufer[message.from_user.id])
+        support_function_bot.send_files_to_api(user_files, message.from_user.id, key_bufer[int(message.from_user.id)])
         start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_to_web = types.KeyboardButton("Продолжить на сайте")
         button_go_into_bot = types.KeyboardButton("Хочу в боте")
