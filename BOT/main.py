@@ -4,6 +4,7 @@ from telebot import types
 
 import requests
 import json
+import os
 
 token = '1606920972:AAFC_ZFHY4aaYc54Q9KBAFbVvuMzhLpRdGM'
 url2="http://212.109.192.158/pdfun/api/v1.0/merge_files"
@@ -80,29 +81,33 @@ def check_text(message):
         button_merge = types.KeyboardButton("Merge PDFs")
         keyboard.add(button_merge)
         msg = bot.send_message(message.chat.id, "Choose function",reply_markup=keyboard)
-        bot.register_next_step_handler(msg,func)
+        bot.register_next_step_handler(msg,funcs)
     elif message.text == 'Загрузить ещё файл':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_into_start = types.KeyboardButton("Начало")
         msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
         bot.register_next_step_handler(msg, take_file)
     elif message.text == 'Конец загрузки':
-        
         start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_to_web = types.KeyboardButton("Продолжить на сайте")
         button_go_into_bot = types.KeyboardButton("Хочу в боте")
         start_keyboard.add(button_go_to_web, button_go_into_bot)	
         bot.send_message(message.chat.id,"Файлы успешно отправлены на сайт", reply_markup=start_keyboard)
 
-def func(msg):
+def funcs(msg):
     if msg.text == "Merge PDFs":
         msg = bot.send_message(msg.chat.id, "Send files to merge")
         bot.register_next_step_handler(msg, sendm)
 
 def sendm(msg):
-    if(msg.content_type == "document" and msg.documet.mime_type == "application/pdf"):
-        path = msg.documet.file_id
-        requests.post(url2,"file")
-
+    if(msg.content_type == "document" and msg.document.mime_type == "application/pdf"):
+        while msg.document:
+            print(msg.document.file_name)
+            msg = bot.send_message(msg.chat.id,"Another")
+            # path = msg.document.file_id
+            # myfile = requests.get(path)
+            # file = { "file":open(f"./user_files/document{i}.pdf", 'wb').write(myfile.content)}
+            # requests.post(url2,file)
+        msg = bot.send_message(msg.chat.id,"DONE")
 
 bot.infinity_polling()
