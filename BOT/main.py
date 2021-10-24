@@ -79,6 +79,7 @@ def start_message(message):
 
 @bot.message_handler(content_types='text')
 def check_text(message):
+    global key_bufer
     if message.text == 'Продолжить на сайте':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_into_start = types.KeyboardButton("Начало")
