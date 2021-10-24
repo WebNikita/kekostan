@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request, session, send_from_directory
 from flask.helpers import send_file
 from flask.wrappers import Request
-import requests
 from flask_cors import CORS
 import os
 
