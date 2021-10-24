@@ -11,7 +11,6 @@ from telebot.apihelper import download_file
 import support_function_bot
 
 token = '1606920972:AAFC_ZFHY4aaYc54Q9KBAFbVvuMzhLpRdGM'
-url2="http://212.109.192.158/pdfun/api/v1.0/merge_files"
 
 bot = telebot.TeleBot(token)
 
@@ -28,7 +27,7 @@ def send_code_to_API(message):
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Начало")
             msg = bot.send_message(message.chat.id,"Успех! Загрузите файл (Один!)", reply_markup=keyboard)
-            bot.register_next_step_handler(msg, take_file)
+            bot.register_next_step_handler(msg, take_file, "send")
         else:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Начало")
@@ -43,7 +42,10 @@ def send_code_to_API(message):
         bot.send_message(message.chat.id,"Вы ввели что то не то - нужны цифры", reply_markup=keyboard)
 
 
-def take_file(message):
+def take_file(message, *args):
+    for arg in args:
+        type = arg
+        print(type)
     if message.content_type == 'document':
         if message.document.mime_type == 'application/pdf':
             file_info = bot.get_file(message.document.file_id)
@@ -51,8 +53,12 @@ def take_file(message):
             file_name = message.document.file_name
             support_function_bot.safe_files(downloaded_file, file_name, message.from_user.id)
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            button_go_into_start = types.KeyboardButton("Конец загрузки")
-            button_go_into_bot = types.KeyboardButton("Загрузить ещё файл")
+            if type == "send":
+                button_go_into_start = types.KeyboardButton("Конец загрузки")
+                button_go_into_bot = types.KeyboardButton("Загрузить ещё файл")
+            elif type == "merge":
+                button_go_into_start = types.KeyboardButton("End files for merge")
+                button_go_into_bot = types.KeyboardButton("Download file for merge")
             keyboard.add(button_go_into_bot ,button_go_into_start)
             bot.send_message(message.chat.id,"Что делаем?", reply_markup=keyboard)
         else:
@@ -99,7 +105,12 @@ def check_text(message):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_into_start = types.KeyboardButton("Начало")
         msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
-        bot.register_next_step_handler(msg, take_file)
+        bot.register_next_step_handler(msg, take_file, "send")
+    elif message.text == 'Download file for merge':
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button_go_into_start = types.KeyboardButton("Начало")
+        msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
+        bot.register_next_step_handler(msg, take_file, "merge")
     elif message.text == 'Конец загрузки':
         print(key_bufer)
         user_files = os.listdir(f'user_files/{message.from_user.id}')
@@ -109,21 +120,21 @@ def check_text(message):
         button_go_into_bot = types.KeyboardButton("Хочу в боте")
         start_keyboard.add(button_go_to_web, button_go_into_bot)	
         bot.send_message(message.chat.id,"Файлы успешно отправлены на сайт", reply_markup=start_keyboard)
+    elif message.text == 'End files for merge':
+        print(key_bufer)
+        user_files = os.listdir(f'user_files/{message.from_user.id}')
+        support_function_bot.send_files_to_api_mer(user_files, message.from_user.id)
+        start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button_go_to_web = types.KeyboardButton("Продолжить на сайте")
+        button_go_into_bot = types.KeyboardButton("Хочу в боте")
+        start_keyboard.add(button_go_to_web, button_go_into_bot)	
+        bot.send_message(message.chat.id,"Файлы успешно отправлены на сайт", reply_markup=start_keyboard)
+
 
 def funcs(msg):
     if msg.text == "Merge PDFs":
         msg = bot.send_message(msg.chat.id, "Send files to merge")
-        bot.register_next_step_handler(msg, sendm)
+        bot.register_next_step_handler(msg, take_file, "merge")
 
-def sendm(msg):
-    if(msg.content_type == "document" and msg.document.mime_type == "application/pdf"):
-        while msg.document:
-            print(msg.document.file_name)
-            msg = bot.send_message(msg.chat.id,"Another")
-            # path = msg.document.file_id
-            # myfile = requests.get(path)
-            # file = { "file":open(f"./user_files/document{i}.pdf", 'wb').write(myfile.content)}
-            # requests.post(url2,file)
-        msg = bot.send_message(msg.chat.id,"DONE")
 
 bot.infinity_polling()

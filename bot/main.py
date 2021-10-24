@@ -33,5 +33,8 @@ def merge_files(message):
     msg = bot.send_message(message.chat.id, "Send files to merge")
     bot.register_next_step_handler(msg,merge)
 
+def merge(msg):
+    
+
 
 bot.infinity_polling()
