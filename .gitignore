@@ -1,4 +1,8 @@
 ./env
 /env
 env
-.pyc
+*.pyc
+API/__pychache__
+__pychache__
+API/users_files
+/API/main.db

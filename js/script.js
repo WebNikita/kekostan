@@ -2,6 +2,13 @@ let span = document.getElementById("telegram-code");
 let files = [];
 let mergeBtn = document.getElementById("merge-button");
 let user_code;
+
+//selecting all required elements
+let dropArea = document.querySelector(".drag-area");
+let dragText = dropArea.querySelector("header");
+let button = dropArea.querySelector("button");
+let input = dropArea.querySelector("input");
+
 document.addEventListener("DOMContentLoaded", () => {
   getCode();
 });
@@ -50,25 +57,34 @@ function getCode() {
 }
 
 mergeBtn.onclick = function () {
-  if (files) {
-    sendFile(files, "merge");
+  if (files.length) {
+    sendFile("merge");
   } else {
-    console.log("No file!");
+    alert("No file uploaded!");
   }
 };
 
 function setFile(inputFiles) {
   // let inputFiles = input.files;
-  console.log("inputFiles:");
+  console.log("inputFiles from setFile:");
   console.log(inputFiles);
-  Array.prototype.forEach.call(inputFiles, (file) => files.push(file));
+  Array.prototype.forEach.call(inputFiles, (inputFile) => {
+    if (files.every((file) => file.name !== inputFile.name)) {
+      files.push(inputFile);
+    } else {
+      alert(`${inputFile.name} already uploaded!`);
+    }
+  });
   console.log("files:");
   console.log(files);
+  let str = "";
+  for (let i = 0; i < files.length; i++) {
+    str += files[i].name + "\n";
+  }
+  dragText.textContent = str;
 }
 
-function sendFile(input, funcType) {
-  console.log(input);
-  console.log(funcType);
+function sendFile(funcType) {
   // 1. Создаём новый XMLHttpRequest-объект
   let xhr = new XMLHttpRequest();
   url = "http://localhost:5000/pdfun/api/v1.0/merge_files";
@@ -112,12 +128,6 @@ function sendFile(input, funcType) {
   files = [];
 }
 
-//selecting all required elements
-let dropArea = document.querySelector(".drag-area");
-let dragText = dropArea.querySelector("header");
-let button = dropArea.querySelector("button");
-let input = dropArea.querySelector("input");
-
 button.onclick = () => {
   input.click();
   //if user click on the button then the input also clicked
@@ -125,7 +135,8 @@ button.onclick = () => {
 
 input.addEventListener("change", function () {
   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  setFile(this.files);
+  let fileinp = this.files;
+  setFile(fileinp);
 });
 
 // //If user Drag File Over DropArea
@@ -148,6 +159,6 @@ dropArea.addEventListener("drop", (event) => {
   for (let i = 0; i < fileinp.length; i++) {
     str += fileinp[i].name + "\n";
   }
-  dropArea.textContent = str;
+  dragText.textContent = str;
   setFile(fileinp);
 });
