@@ -32,7 +32,6 @@ def merge_files():
         os.remove('/home/pdf/kekostan/API/users_files/test.pdf')
     
     path_bufer = []
-    data_info = request
     data_files = request.files.lists()
     print(request.files)
     # print(data_files)
@@ -85,7 +84,11 @@ def send_file_to_web():
 
 @app.route("/pdfun/api/v1.0/save_file_from_tg", methods=["POST"])
 def save_file_from_tg():
+    data_files = request.files.lists()
     print(request.files)
+    # print(data_files)
+    for data in data_files:
+        print(data)
     return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
