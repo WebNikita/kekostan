@@ -16,7 +16,7 @@ def send_code_to_API(message):
         if code_request.json()['status'] == True:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Начало")
-            msg = bot.send_message(message.chat.id,"Успех! Загрузите файлы", reply_markup=keyboard)
+            msg = bot.send_message(message.chat.id,"Успех! Загрузите файл", reply_markup=keyboard)
             bot.register_next_step_handler(msg, take_file)
         else:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -36,7 +36,7 @@ def take_file(message):
     if message.content_type == 'document':
         if message.document.mime_type == 'application/pdf':
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            button_go_into_start = types.KeyboardButton("Конец")
+            button_go_into_start = types.KeyboardButton("Конец загрузки")
             button_go_into_bot = types.KeyboardButton("Загрузить ещё файл")
             keyboard.add(button_go_into_bot ,button_go_into_start)
             bot.send_message(message.chat.id,"Что делаем?", reply_markup=keyboard)
@@ -73,6 +73,19 @@ def check_text(message):
         keyboard.add(button_go_into_start)	
         prev_message = bot.send_message(message.chat.id,"Введите код с сайта:", reply_markup=keyboard)
         bot.register_next_step_handler(prev_message, send_code_to_API)
+    elif message.text == 'Загрузить ещё файл':
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button_go_into_start = types.KeyboardButton("Начало")
+        msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
+        bot.register_next_step_handler(msg, take_file)
+    elif message.text == 'Конец загрузки':
+        
+        start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        button_go_to_web = types.KeyboardButton("Продолжить на сайте")
+        button_go_into_bot = types.KeyboardButton("Хочу в боте")
+        start_keyboard.add(button_go_to_web, button_go_into_bot)	
+        bot.send_message(message.chat.id,"Файлы успешно отправлены на сайт", reply_markup=start_keyboard)
+
 
 
 
