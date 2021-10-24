@@ -41,10 +41,10 @@ def merge_files():
         print(user_code)
         for items in data[1]:
             file_name = secure_filename(items.filename)
-            items.save(f"users_files/{file_name}")
-            path_bufer.append(f"users_files/{file_name}")
-    pdf_functions.merge_files(path_bufer, "users_files/test.pdf")
-    return send_from_directory("users_files/", "test.pdf", as_attachment=True)
+            items.save(f"/home/nikita/kekostan/API/users_files/{file_name}")
+            path_bufer.append(f"/home/nikita/kekostan/API/users_files/{file_name}")
+    pdf_functions.merge_files(path_bufer, "/home/nikita/kekostan/API/users_files/test.pdf")
+    return send_from_directory("/home/nikita/kekostan/API/users_files/", "test.pdf", as_attachment=True)
 
 
 # Роут для отправки кода на вебморду
@@ -63,7 +63,7 @@ def auth_from_code():
     return jsonify({"user_code": support_functions.create_code(4)})
 
 
-@app.route("/pdfun/api/v1.0/send_file_to_web", methods=["POST"])
+@app.route("/pdfun/api/v1.0/get_file_from_tg", methods=["POST"])
 def send_file_to_web():
     pass
 
