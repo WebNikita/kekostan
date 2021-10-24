@@ -1,5 +1,6 @@
 import os
 import requests
+import shutil
 
 
 def safe_files(file, file_name, user_id):
@@ -25,6 +26,7 @@ def send_files_to_api(file_list, user_id, key):
         ]
         requests.post(url, files=multiple_files)
         file.close()
+        shutil.rmtree(f'user_files/{user_id}')
 
     
         
