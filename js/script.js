@@ -30,9 +30,8 @@ mergeBtn.onclick = function () {
 };
 
 telegramBtn.onclick = () => {
-
   getFileFromTg();
-}; 
+};
 
 clearButton.onclick = () => {
   files = [];
@@ -49,7 +48,6 @@ flipBtn.onclick = () => {
   } else {
     alert("No file uploaded!");
   }
-};
 };
 
 splitBtn.onclick = () => {
@@ -93,7 +91,7 @@ dropArea.addEventListener("drop", (event) => {
 function getCode() {
   let xhr = new XMLHttpRequest();
 
-  url = "http://localhost:5000/pdfun/api/v1.0/get_code";
+  url = "http://212.109.192.158/pdfun/api/v1.0/get_code";
   // 2. Настраиваем его: GET-запрос по URL /article/.../load
   xhr.open("GET", url, true);
 
