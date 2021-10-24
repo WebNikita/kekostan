@@ -6,8 +6,9 @@ let user_code;
 //selecting all required elements
 let dropArea = document.querySelector(".drag-area");
 let dragText = dropArea.querySelector("header");
-let button = dropArea.querySelector("button");
-let input = dropArea.querySelector("input");
+let browseButton = document.getElementById("browse-button");
+let clearButton = document.getElementById("clear-button");
+let fileInput = document.getElementById("file-input");
 
 document.addEventListener("DOMContentLoaded", () => {
   getCode();
@@ -65,7 +66,7 @@ mergeBtn.onclick = function () {
 };
 
 function setFile(inputFiles) {
-  // let inputFiles = input.files;
+  // let inputFiles = fileInput.files;
   console.log("inputFiles from setFile:");
   console.log(inputFiles);
   Array.prototype.forEach.call(inputFiles, (inputFile) => {
@@ -85,6 +86,10 @@ function setFile(inputFiles) {
 }
 
 function sendFile(funcType) {
+  if (funcType === "merge" && files.length < 2) {
+    alert("For merge there are should be at least 2 files!");
+    return 1;
+  }
   // 1. Создаём новый XMLHttpRequest-объект
   let xhr = new XMLHttpRequest();
   url = "http://localhost:5000/pdfun/api/v1.0/merge_files";
@@ -128,12 +133,17 @@ function sendFile(funcType) {
   files = [];
 }
 
-button.onclick = () => {
-  input.click();
-  //if user click on the button then the input also clicked
+clearButton.onclick = () => {
+  files = [];
+  dragText.textContent = "Drag & Drop to Upload File";
 };
 
-input.addEventListener("change", function () {
+browseButton.onclick = () => {
+  fileInput.click();
+  //if user click on the browseButton then the input also clicked
+};
+
+fileInput.addEventListener("change", function () {
   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
   let fileinp = this.files;
   setFile(fileinp);
@@ -156,9 +166,17 @@ dropArea.addEventListener("drop", (event) => {
   //getting user select file and [0] this means if user select multiple files then we'll select only the first one
   let str = "";
   let fileinp = event.dataTransfer.files;
-  for (let i = 0; i < fileinp.length; i++) {
-    str += fileinp[i].name + "\n";
+  console.log(typeof fileinp);
+  if (
+    Array.prototype.every.call(fileinp, (file) => file.name.endsWith("*.pdf"))
+  ) {
+    for (let i = 0; i < fileinp.length; i++) {
+      str += fileinp[i].name + "\n";
+    }
+    dragText.textContent = str;
+    setFile(fileinp);
+  } else {
+    dragText.textContent = "Drag & Drop to Upload File";
+    alert("Uploading files should be .pdf format");
   }
-  dragText.textContent = str;
-  setFile(fileinp);
 });
