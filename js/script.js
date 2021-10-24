@@ -1,16 +1,74 @@
 let span = document.getElementById("telegram-code");
 let files = [];
 let mergeBtn = document.getElementById("merge-button");
+let telegramBtn = document.getElementById("telegram-button");
 let user_code;
 
 //selecting all required elements
 let dropArea = document.querySelector(".drag-area");
 let dragText = dropArea.querySelector("header");
-let button = dropArea.querySelector("button");
-let input = dropArea.querySelector("input");
+let browseButton = document.getElementById("browse-button");
+let clearButton = document.getElementById("clear-button");
+let fileInput = document.getElementById("file-input");
 
 document.addEventListener("DOMContentLoaded", () => {
   getCode();
+});
+
+mergeBtn.onclick = function () {
+  if (files.length) {
+    sendFile("merge");
+  } else {
+    alert("No file uploaded!");
+  }
+};
+
+telegramBtn.onclick = () => {
+  getFileFromTg();
+};
+
+clearButton.onclick = () => {
+  files = [];
+  dragText.textContent = "Drag & Drop to Upload File";
+};
+
+browseButton.onclick = () => {
+  fileInput.click();
+  //if user click on the browseButton then the input also clicked
+};
+
+fileInput.addEventListener("change", function () {
+  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+  let fileinp = this.files;
+  setFile(fileinp);
+});
+
+// //If user Drag File Over DropArea
+dropArea.addEventListener("dragover", (event) => {
+  event.preventDefault(); //preventing from default behaviour
+  dragText.textContent = "Release them!";
+});
+
+//If user leave dragged File from DropArea
+dropArea.addEventListener("dragleave", () => {
+  dragText.textContent = "Move Here!";
+});
+
+//If user drop File on DropArea
+dropArea.addEventListener("drop", (event) => {
+  event.preventDefault(); //preventing from default behaviour
+  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
+  let str = "";
+  let fileinp = event.dataTransfer.files;
+  console.log(typeof fileinp);
+  if (
+    Array.prototype.every.call(fileinp, (file) => file.name.endsWith(".pdf"))
+  ) {
+    setFile(fileinp);
+  } else {
+    dragText.textContent = "Drag & Drop to Upload File";
+    alert("Uploading files should be .pdf format");
+  }
 });
 
 function getCode() {
@@ -56,16 +114,8 @@ function getCode() {
   };
 }
 
-mergeBtn.onclick = function () {
-  if (files.length) {
-    sendFile("merge");
-  } else {
-    alert("No file uploaded!");
-  }
-};
-
 function setFile(inputFiles) {
-  // let inputFiles = input.files;
+  // let inputFiles = fileInput.files;
   console.log("inputFiles from setFile:");
   console.log(inputFiles);
   Array.prototype.forEach.call(inputFiles, (inputFile) => {
@@ -77,14 +127,22 @@ function setFile(inputFiles) {
   });
   console.log("files:");
   console.log(files);
-  let str = "";
+  dragText.textContent = "";
+  let node = document.createElement("ul");
+
+  dragText.appendChild(node);
   for (let i = 0; i < files.length; i++) {
-    str += files[i].name + "\n";
+    let li = document.createElement("li");
+    li.textContent = files[i].name;
+    node.appendChild(li);
   }
-  dragText.textContent = str;
 }
 
 function sendFile(funcType) {
+  if (funcType === "merge" && files.length < 2) {
+    alert("For merge there are should be at least 2 files!");
+    return 1;
+  }
   // 1. Создаём новый XMLHttpRequest-объект
   let xhr = new XMLHttpRequest();
   url = "http://localhost:5000/pdfun/api/v1.0/merge_files";
@@ -128,37 +186,47 @@ function sendFile(funcType) {
   files = [];
 }
 
-button.onclick = () => {
-  input.click();
-  //if user click on the button then the input also clicked
-};
+function getFileFromTg() {
+  let xhr = new XMLHttpRequest();
 
-input.addEventListener("change", function () {
-  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  let fileinp = this.files;
-  setFile(fileinp);
-});
+  url = "http://localhost:5000/pdfun/api/v1.0/get_file_from_tg";
+  // 2. Настраиваем его: GET-запрос по URL /article/.../load
+  xhr.open("POST", url, true);
+  userCodeJson = JSON.stringify({ user_code: user_code });
+  console.log(userCodeJson);
+  console.log(typeof userCodeJson);
+  xhr.send(userCodeJson);
 
-// //If user Drag File Over DropArea
-dropArea.addEventListener("dragover", (event) => {
-  event.preventDefault(); //preventing from default behaviour
-  dragText.textContent = "Release them!";
-});
+  // 4. Этот код сработает после того, как мы получим ответ сервера
+  xhr.onload = function () {
+    if (xhr.status != 200) {
+      // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+      console.log(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+    } else {
+      // если всё прошло гладко, выводим результат
+      console.log("xhr.response:");
+      console.log(xhr.response.toString());
+      console.log(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
+      // res = JSON.parse(xhr.response);
+      // user_code = res["user_code"];
+      // console.log("user code:");
+      // console.log(user_code);
 
-//If user leave dragged File from DropArea
-dropArea.addEventListener("dragleave", () => {
-  dragText.textContent = "Move Here!";
-});
+      // span.textContent = user_code;
+      // console.log("files:");
+      // console.log(files);
+    }
+  };
 
-//If user drop File on DropArea
-dropArea.addEventListener("drop", (event) => {
-  event.preventDefault(); //preventing from default behaviour
-  //getting user select file and [0] this means if user select multiple files then we'll select only the first one
-  let str = "";
-  let fileinp = event.dataTransfer.files;
-  for (let i = 0; i < fileinp.length; i++) {
-    str += fileinp[i].name + "\n";
-  }
-  dragText.textContent = str;
-  setFile(fileinp);
-});
+  xhr.onprogress = function (event) {
+    if (event.lengthComputable) {
+      console.log(`Получено ${event.loaded} из ${event.total} байт`);
+    } else {
+      console.log(`Получено ${event.loaded} байт`); // если в ответе нет заголовка Content-Length
+    }
+  };
+
+  xhr.onerror = function () {
+    console.log("Запрос не удался");
+  };
+}
