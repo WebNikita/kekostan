@@ -2,7 +2,11 @@ import telebot
 from telebot import types
 
 import requests
-import json
+import os
+
+from telebot.apihelper import download_file
+
+import support_function_bot
 
 token = '1273078054:AAGDTUYC56-Lf2EtJFdVC_OufB-walPDECA'
 
@@ -16,7 +20,7 @@ def send_code_to_API(message):
         if code_request.json()['status'] == True:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Начало")
-            msg = bot.send_message(message.chat.id,"Успех! Загрузите файл", reply_markup=keyboard)
+            msg = bot.send_message(message.chat.id,"Успех! Загрузите файл (Один!)", reply_markup=keyboard)
             bot.register_next_step_handler(msg, take_file)
         else:
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -35,6 +39,10 @@ def send_code_to_API(message):
 def take_file(message):
     if message.content_type == 'document':
         if message.document.mime_type == 'application/pdf':
+            file_info = bot.get_file(message.document.file_id)
+            downloaded_file = bot.download_file(file_info.file_path)
+            file_name = message.document.file_name
+            support_function_bot.safe_files(downloaded_file, file_name, message.from_user.id)
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             button_go_into_start = types.KeyboardButton("Конец загрузки")
             button_go_into_bot = types.KeyboardButton("Загрузить ещё файл")
@@ -79,7 +87,8 @@ def check_text(message):
         msg = bot.send_message(message.chat.id,"Загрузите файл", reply_markup=keyboard)
         bot.register_next_step_handler(msg, take_file)
     elif message.text == 'Конец загрузки':
-        
+        user_files = os.listdir(f'user_files/{message.from_user.id}')
+        support_function_bot.send_files_to_api(user_files, message.from_user.id)
         start_keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         button_go_to_web = types.KeyboardButton("Продолжить на сайте")
         button_go_into_bot = types.KeyboardButton("Хочу в боте")
