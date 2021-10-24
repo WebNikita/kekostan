@@ -90,7 +90,9 @@ def save_file_from_tg():
     # print(data_files)
     counter = 0
     for data in data_files:
-        print(data])
+        file_name = secure_filename(data[1].filename)
+        os.mkdir(f'/home/pdf/kekostan/API/users_files/{data[0]}')
+        data[1].save(f"/home/pdf/kekostan/API/users_files/{data[0]}/{file_name}")
     return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
