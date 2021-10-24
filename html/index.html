@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
-      <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -31,7 +34,9 @@
     <header>
       <nav class="navbar grey darken-4">
         <div class="container-fluid">
-          <h1 class="brand-logo nav-wrapper" href="#"><big><big>Kekistan PDF</big></big></h1>
+          <h1 class="brand-logo nav-wrapper" href="#">
+            <big><big>Kekistan PDF</big></big>
+          </h1>
         </div>
       </nav>
     </header>
@@ -41,9 +46,37 @@
         <div class="row">
           <div class="col-8 center-align">
             <div class="drag-area center-align">
-              <header>Drag & Drop to Upload File</header>
-              <button id="browse-button">Browse File</button>
-              <button id="clear-button">Clear</button>
+              <header>Choose or drop files here</header>
+              <div>
+                <button
+                  id="browse-button"
+                  class="
+                    btn
+                    grey
+                    darken-4
+                    white-text
+                    waves-effect waves-light
+                    z-depth-2
+                    btn-control
+                  "
+                >
+                  Choose Files
+                </button>
+                <button
+                  id="clear-button"
+                  class="
+                    btn
+                    grey
+                    darken-4
+                    white-text
+                    waves-effect waves-light
+                    z-depth-2
+                    btn-control
+                  "
+                >
+                  Clear Files
+                </button>
+              </div>
               <input
                 type="file"
                 hidden
@@ -53,15 +86,61 @@
               />
             </div>
             <h2 class="center-align">Telegram Code</h2>
-            <div id="telegram-code" class="grey darken-4 white-text z-depth-2 center-align">КОД</div>
+            <div
+              id="telegram-code"
+              class="grey darken-4 white-text z-depth-2 center-align"
+            ></div>
           </div>
-          <div class="col center-align" >
+          <div class="col center-align">
             <h2 class="center-align">Functions</h2>
-            <div class="btn-group-vertical z-depth-2 function-list">
-              <button type="button" class="btn btn-large btn-light waves-effect waves-dark" id="merge-button">
+            <div class="btn-group-vertical z-depth-3 function-list">
+              <button
+                type="button"
+                class="btn btn-large waves-effect waves-dark white_btn"
+                id="merge-button"
+              >
                 Merge PDF files
               </button>
-              <button type="button" class="btn btn-large grey darken-4 white-text waves-effect waves-light">Download PDF files from Telegram</button>
+              <button
+                id="split-button"
+                type="button"
+                class="btn btn-large waves-effect waves-dark white_btn"
+              >
+                Split PDF file
+              </button>
+              <button
+                id="flip-button"
+                type="button"
+                class="btn btn-large waves-effect waves-dark white_btn"
+              >
+                Flip pages
+              </button>
+              <button
+                id="remove-pages-button"
+                type="button"
+                class="btn btn-large waves-effect waves-dark white_btn"
+              >
+                Remove pages
+              </button>
+              <button
+                id="convert-button"
+                type="button"
+                class="btn btn-large waves-effect waves-dark white_btn"
+              >
+                Convert to zip
+              </button>
+              <button
+                id="telegram-button"
+                type="button"
+                class="
+                  btn btn-large
+                  white-text
+                  waves-effect waves-light
+                  black_btn
+                "
+              >
+                Download PDF files from Telegram
+              </button>
             </div>
           </div>
         </div>

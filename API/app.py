@@ -60,12 +60,26 @@ def get_code():
 # Роут для авторизации пользователя по коду
 @app.route("/pdfun/api/v1.0/auth_from_code", methods=["POST"])
 def auth_from_code():
-    return jsonify({"user_code": 'Ok'})
+    data_code = request.json
+    print(data_code.get('code'))
+    if session.query(Users).filter_by(key=data_code.get('code')).first():
+        return jsonify({"status": True})
+    else:
+        return jsonify({"status": False})
 
 
 @app.route("/pdfun/api/v1.0/get_file_from_tg", methods=["POST"])
 def send_file_to_web():
-    pass
+    import json
+
+    payload = request.data.decode("utf-8")
+    user_code = json.loads(payload)["user_code"]
+    try:
+        print(user_code)
+        # print(payload)
+    except Exception as e:
+        print("Something goes wrong " + str(e))
+    return str(payload)
 
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
