@@ -85,13 +85,11 @@ def send_file_to_web():
 @app.route("/pdfun/api/v1.0/save_file_from_tg", methods=["POST"])
 def save_file_from_tg():
     data_files = request.files.lists()
+    files_bufer = {}
     print(request.files)
     # print(data_files)
     counter = 0
-    for data in data_files:
-        counter +=1
-        if counter != 2:
-            print(data[1])
+    print(data_files[0], data_files[1])
     return 'ok'
 
 @app.route("/pdfun/api/v1.0/del_file", methods=["POST"])
