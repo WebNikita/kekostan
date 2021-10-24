@@ -46,44 +46,46 @@
         <div class="row">
           <div class="col-8 center-align">
             <div class="drag-area center-align">
-              <header>Choose or drop files here</header>
-              <div>
-                <button
-                  id="browse-button"
-                  class="
-                    btn
-                    grey
-                    darken-4
-                    white-text
-                    waves-effect waves-light
-                    z-depth-2
-                    btn-control
-                  "
-                >
-                  Choose Files
-                </button>
-                <button
-                  id="clear-button"
-                  class="
-                    btn
-                    grey
-                    darken-4
-                    white-text
-                    waves-effect waves-light
-                    z-depth-2
-                    btn-control
-                  "
-                >
-                  Clear Files
-                </button>
+              <div id="drag-container">
+                <header>Choose or drop files here</header>
+                <div>
+                  <button
+                    id="browse-button"
+                    class="
+                      btn
+                      grey
+                      darken-4
+                      white-text
+                      waves-effect waves-light
+                      z-depth-2
+                      btn-control
+                    "
+                  >
+                    Choose Files
+                  </button>
+                  <button
+                    id="clear-button"
+                    class="
+                      btn
+                      grey
+                      darken-4
+                      white-text
+                      waves-effect waves-light
+                      z-depth-2
+                      btn-control
+                    "
+                  >
+                    Clear Files
+                  </button>
+                </div>
+                <input
+                  type="file"
+                  hidden
+                  id="file-input"
+                  accept=".pdf"
+                  multiple
+                />
               </div>
-              <input
-                type="file"
-                hidden
-                id="file-input"
-                accept=".pdf"
-                multiple
-              />
             </div>
             <h2 class="center-align">Telegram Code</h2>
             <div
@@ -127,7 +129,7 @@
                 type="button"
                 class="btn btn-large waves-effect waves-dark white_btn"
               >
-                Convert to zip
+                Convert to zip pages
               </button>
               <button
                 id="telegram-button"
