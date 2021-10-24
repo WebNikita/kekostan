@@ -46,9 +46,11 @@
         <div class="row">
           <div class="col-8 center-align">
             <div class="drag-area center-align">
-              <header>Drag & Drop to Upload File</header>
-              <button id="browse-button">Browse File</button>
-              <button id="clear-button">Clear</button>
+              <header>Choose or drop files here</header>
+              <div>
+                <button id="browse-button" class="btn grey darken-4 white-text waves-effect waves-light z-depth-2 btn-control">Choose Files</button>
+                <button id="clear-button" class="btn grey darken-4 white-text waves-effect waves-light z-depth-2 btn-control">Clear Files</button>
+              </div>
               <input
                 type="file"
                 hidden
@@ -58,36 +60,15 @@
               />
             </div>
             <h2 class="center-align">Telegram Code</h2>
-            <div
-              id="telegram-code"
-              class="grey darken-4 white-text z-depth-2 center-align"
-            >
-              КОД
-            </div>
+            <div id="telegram-code" class="grey darken-4 white-text z-depth-2 center-align"></div>
           </div>
           <div class="col center-align">
             <h2 class="center-align">Functions</h2>
-            <div class="btn-group-vertical z-depth-2 function-list">
-              <button
-                type="button"
-                class="btn btn-large btn-light waves-effect waves-dark"
-                id="merge-button"
-              >
+            <div class="btn-group-vertical z-depth-3 function-list">
+              <button type="button" class="btn btn-large waves-effect waves-dark white_btn" id="merge-button">
                 Merge PDF files
               </button>
-              <button
-                type="button"
-                class="
-                  btn btn-large
-                  grey
-                  darken-4
-                  white-text
-                  waves-effect waves-light
-                "
-                id="telegram-button"
-              >
-                Download PDF files from Telegram
-              </button>
+              <button id="telegram-button" type="button" class="btn btn-large white-text waves-effect waves-light black_btn">Download PDF files from Telegram</button>
             </div>
           </div>
         </div>
