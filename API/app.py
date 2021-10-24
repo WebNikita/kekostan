@@ -51,9 +51,9 @@ def merge_files():
 @app.route("/pdfun/api/v1.0/get_code", methods=["GET"])
 def get_code():
     user_code = support_functions.create_code(99, 999)
-    # user = Users(key=user_code)
-    # session.add(user)
-    # session.commit()
+    user = Users(key=user_code)
+    session.add(user)
+    session.commit()
     return jsonify({"user_code": user_code})
 
 
